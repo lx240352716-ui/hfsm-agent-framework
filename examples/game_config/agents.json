@@ -1,0 +1,56 @@
+{
+    "agents": {
+        "coordinator": {
+            "role": "lead",
+            "workflow": "agents/coordinator_memory/process/coordinator_workflow.py",
+            "description": "任务规划·分解·派发·评审"
+        },
+        "combat": {
+            "role": "sub",
+            "workflow": "agents/combat_memory/process/combat_workflow.py",
+            "description": "战斗机制分析，Buff/技能因子推理"
+        },
+        "numerical": {
+            "role": "sub",
+            "workflow": "agents/numerical_memory/process/numerical_workflow.py",
+            "description": "定位目标表，生成填写方案"
+        },
+        "executor": {
+            "role": "sub",
+            "workflow": "agents/executor_memory/process/executor_workflow.py",
+            "description": "读写 Excel，分配 ID，填写数据"
+        },
+        "qa": {
+            "role": "sub",
+            "workflow": "agents/qa_memory/process/qa_workflow.py",
+            "description": "数据完整性校验，输出验证报告"
+        }
+    },
+    "layers": {
+        "coordinator": {
+            "agents": [
+                "coordinator"
+            ],
+            "description": "L0 主策划"
+        },
+        "design": {
+            "agents": [
+                "combat",
+                "numerical"
+            ],
+            "description": "L1 领域策划"
+        },
+        "executor": {
+            "agents": [
+                "executor"
+            ],
+            "description": "L2 执行策划"
+        },
+        "pipeline": {
+            "agents": [
+                "qa"
+            ],
+            "description": "L3 质检"
+        }
+    }
+}

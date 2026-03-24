@@ -1,0 +1,25 @@
+# Dependencies
+__pycache__/
+*.pyc
+*.pyo
+
+# Runtime data
+**/data/*.json
+**/output/
+**/staging/
+
+# Excel source data (private)
+excel/
+*.xlsx
+*.xls
+
+# SQLite databases
+*.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store

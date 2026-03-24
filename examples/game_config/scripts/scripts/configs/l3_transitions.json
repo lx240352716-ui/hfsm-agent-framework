@@ -1,0 +1,48 @@
+{
+    "agent": "qa",
+    "layer": "L3",
+    "description": "L3 QA Agent：校验→合并→完成（全自动，不通过才上报）",
+    "pipeline": [
+        {
+            "step": "qa",
+            "hook": "qa_hooks.on_enter_qa",
+            "description": "自动校验：ID/外键/白名单/格式",
+            "on_pass": "merge",
+            "on_fail": {
+                "action": "reject_to_executor",
+                "rollback_file": "output/{task}/rollback_qa_executor.json",
+                "payload": [
+                    "error_log",
+                    "original_output",
+                    "failed_checks",
+                    "retry_hint"
+                ]
+            }
+        },
+        {
+            "step": "merge",
+            "hook": "qa_hooks.on_enter_merge",
+            "description": "COM Excel 写入源表 + 刷新索引",
+            "on_pass": "done",
+            "on_fail": {
+                "action": "reject_to_executor",
+                "rollback_file": "output/{task}/rollback_merge_executor.json",
+                "payload": [
+                    "error_log",
+                    "merge_conflict"
+                ]
+            }
+        },
+        {
+            "step": "done",
+            "hook": "qa_hooks.on_enter_done",
+            "description": "输出最终结果 + 变更日志"
+        }
+    ],
+    "terminal_states": {
+        "done": {
+            "description": "全部完成",
+            "status": "ALL_DONE"
+        }
+    }
+}
