@@ -20,7 +20,6 @@ import importlib.util
 
 from .config import Config
 
-
 def load_workflow(name, path):
     """动态加载一个 Agent 的 workflow.py，返回模块对象"""
     spec = importlib.util.spec_from_file_location(f"workflow_{name}", path)
@@ -28,11 +27,9 @@ def load_workflow(name, path):
     spec.loader.exec_module(mod)
     return mod
 
-
 def workflow_to_states(mod):
     """把 workflow 模块的 states 列表转为状态名列表"""
     return [s['name'] for s in getattr(mod, 'states', [])]
-
 
 def build_hfsm(agents_config=None):
     """从配置自动组装完整 HFSM。
@@ -47,7 +44,7 @@ def build_hfsm(agents_config=None):
         agents_config = Config.load_agents_config()
 
     # 确保 scripts 目录在 path 中
-    project_dir = Config.project_dir()
+    project_dir = str(Config.get_root())
     scripts_core = os.path.join(project_dir, 'scripts', 'core')
     if os.path.exists(scripts_core) and scripts_core not in sys.path:
         sys.path.insert(0, scripts_core)
@@ -63,8 +60,7 @@ def build_hfsm(agents_config=None):
 
     return workflows
 
-
-def bind_hooks(model, state_prefix, workflow_mod):
+def bind_hooks(model, state_prefix, workflow_mod, agent_name=None):
     """从 workflow 模块的 hooks 映射中读取函数引用，绑定到回调。
 
     支持扁平格式：
@@ -74,6 +70,7 @@ def bind_hooks(model, state_prefix, workflow_mod):
         model: model 对象
         state_prefix: 状态名前缀
         workflow_mod: workflow 模块对象
+        agent_name: agent 名称，用于注入 HookContext
     """
     hooks = getattr(workflow_mod, 'hooks', {})
     mod_dir = os.path.dirname(workflow_mod.__file__)
@@ -91,6 +88,10 @@ def bind_hooks(model, state_prefix, workflow_mod):
                 spec.loader.exec_module(hook_mod)
                 fn = getattr(hook_mod, fn_name, None)
                 if fn:
+                    # 如果提供了 agent_name，则自动使用 HookContext 包装，精简业务代码
+                    if agent_name:
+                        from .runner import wrap_hook
+                        fn = wrap_hook(fn, agent_name)
                     # 绑定到 model
                     full_name = f"{callback_name}"
                     setattr(model, full_name, fn)

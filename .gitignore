@@ -3,6 +3,11 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
 # Runtime data
 **/data/*.json
 **/output/
@@ -15,6 +20,9 @@ excel/
 
 # SQLite databases
 *.db
+
+# Environment
+.env
 
 # IDE
 .vscode/

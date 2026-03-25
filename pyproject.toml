@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "hfsm-agent-framework"
+version = "0.1.0"
+description = "分层状态机 + Hook 驱动的多 Agent 框架"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = [
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+hfsm = "cli.hfsm_cli:main"
+
+[tool.setuptools.packages.find]
+include = ["hfsm*", "cli*"]

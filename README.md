@@ -23,9 +23,43 @@ hfsm/
 └── registry.py      # 从 agents.json 自动组装 HFSM
 ```
 
+## 安装
+
+```bash
+pip install git+https://github.com/lx240352716-ui/hfsm-agent-framework.git
+```
+
+安装后即可使用 `hfsm` 命令。
+
 ## 快速开始
 
-### 1. 定义一个 Agent
+### 方式一：CLI（推荐）
+
+```bash
+# 1. 创建新项目
+hfsm init my-project
+cd my-project
+
+# 2. 添加 Agent
+hfsm add-agent my_agent
+
+# 3. 编辑 knowledge 和 hooks（见下方详细说明）
+
+# 4. 运行
+hfsm run my_agent
+```
+
+### 方式二：Python API
+
+```python
+from hfsm.config import Config
+from hfsm.registry import build_hfsm
+
+Config.init("/path/to/project")
+workflows = build_hfsm()
+```
+
+### 定义一个 Agent
 
 每个 Agent 需要：
 - `process/xxx_workflow.py` — 状态和转移定义
@@ -54,7 +88,7 @@ hooks = {
 }
 ```
 
-### 2. 写 Hook 函数
+### 写 Hook 函数
 
 ```python
 # agents/my_agent/process/my_hooks.py
@@ -75,7 +109,7 @@ def on_exit_process():
     return result
 ```
 
-### 3. 注册配置
+### 注册配置
 
 ```json
 // agents.json
@@ -87,16 +121,6 @@ def on_exit_process():
     }
   }
 }
-```
-
-### 4. 运行
-
-```python
-from hfsm.config import Config
-from hfsm.registry import build_hfsm
-
-Config.init("/path/to/project")
-workflows = build_hfsm()
 ```
 
 ## Agent 目录结构约定
