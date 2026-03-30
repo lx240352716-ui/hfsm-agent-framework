@@ -1,74 +1,15 @@
-# Boss System Relations
+# boss 领域知识
 
-## BOSS
-- IslandTrialsActivityTime
-- IslandTrialsCopy
-- IslandTrialsEntrance
-- SeaExploreBuffGroup
-- SeaExploreCopy
+> 在此填入你的项目中 boss 相关的表引用和字段说明。
 
+## 相关表
 
-## boss
-- BeastPiratesBoss
-- BeastPiratesBossSkill
-- BeastPiratesFourStageBoss
-- BeastPiratesStrongholdBoss
-- OverlordBossSkill
-- WorldPersonBoss
+<!-- 
+| 表名 | 说明 |
+|------|------|
+| 表名1 | 用途说明 |
+-->
 
+## 关键字段
 
-## bossID
-- BeastPiratesStronghold
-- ShipGroupTrialBoss
-
-
-## bossId
-- BeastPiratesBoss
-- BeastPiratesFourStageBoss
-- BeastPiratesStrongholdBoss
-- BountyHuntBoss
-- BountyHuntBossReward
-- ExploreBoss
-- ExploreExtraConditionPool
-- ExploreExtraScore
-- TeamBoss
-- UnionBossModel
-- WorldPersonBoss
-- WorldTeamBoss
-- _BountyHuntBossLevel
-- _MSeaBoss
-
-
-## mapId
-- ExploreBoss
-- UltimateChapter
-
-
-## monsterId
-- SeaAreaMonster
-- _MSeaBoss
-- _YearActivityStage
-
-
-## ossId
-- DominateBoss
-- LimitChallengeLevel
-
-
-## prisonId
-- PrisonConfig
-- _PrisonBossPos
-- _PrisonWardenFight
-
-
-## type
-- ExploreExtraConditionPool
-- ExploreExtraScore
-- FightSkipDeclare
-- SceneResourceDetail
-- UnionTradeShipItemType
-- _CelebrationPersonActivityOpen
-- _CommonSummon
-- _MSeaBoss
-
-
+<!-- 填入此领域的关键字段说明 -->

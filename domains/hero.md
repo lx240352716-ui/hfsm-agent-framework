@@ -1,35 +1,15 @@
-# Hero System Relations
+# hero 领域知识
 
-## Ids
-- AutoChessExtraHeroPack
-- HeroFashion
-- HeroUpgradeExpItemRule
-- HeroUpgradeIntimacyItemRule
-- NewTriggerGift
+> 在此填入你的项目中 hero 相关的表引用和字段说明。
 
+## 相关表
 
-## chessId
-- AutoChessHero
-- AutoChessHeroChess
+<!-- 
+| 表名 | 说明 |
+|------|------|
+| 表名1 | 用途说明 |
+-->
 
+## 关键字段
 
-## heroId
-- AutoChessHero
-- SPRecruitMainHero
-- _DemoHeroConfig
-
-
-## heroid
-- IdolInfo
-- ServerChallenge
-
-
-## level
-- AutoChessHeroChess
-- CommonEnemy
-- FightManeuver
-- HideTreasureHeroPool
-- MSeaSearchLevel
-- WarChessHero
-
-
+<!-- 填入此领域的关键字段说明 -->

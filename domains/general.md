@@ -1,79 +1,15 @@
-# General System Relations
+# general 领域知识
 
-## Type
-- GuideStepButtonPath
-- GuideStepEnvironment
-- GuideTrigger
-- NewStrongGuide
+> 在此填入你的项目中 general 相关的表引用和字段说明。
 
+## 相关表
 
-## UI
-- CommonEffect
-- UIEffect
+<!-- 
+| 表名 | 说明 |
+|------|------|
+| 表名1 | 用途说明 |
+-->
 
+## 关键字段
 
-## VarType
-- Config
-- FPSAnalysisConfig
-- PerformanceSettingConfig
-- PropertyEvaluateDisplayPercent
-- SocialConfig
-- TradeConfig
-
-
-## Width
-- GuideStepExtra
-- WarChessGuide
-
-
-## eneryGroups
-- _Integral2V2Robot
-- _MutiTeamFightRobot
-
-
-## groupId
-- NewTriggerGiftGroup
-- _FairPlayFinalsPlayer
-
-
-## islandId
-- MSeaIsland
-- _MSeaIslandTransPointPos
-
-
-## npc
-- HomeLandDressNpc
-- StrongGuideTarget
-
-
-## npcId
-- GvoPlaceChapter
-- HomeLandDressNpc
-
-
-## seasonId
-- _LawlessLandOpen
-- _StampedeOpen
-
-
-## shopId
-- _TurnTableNewShop
-- _TurnTableShop
-
-
-## showPlayerLevel
-- _Integral2V2Robot
-- _MutiTeamFightRobot
-
-
-## storyConditionId
-- MainStoryRaidWinCondition
-- RaidRunMapWinCondition
-
-
-## text
-- ActivityData
-- ActivityEntrance
-- ActivtyStrengthType
-
-
+<!-- 填入此领域的关键字段说明 -->

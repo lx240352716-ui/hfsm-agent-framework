@@ -1,10 +1,15 @@
-# Ship System Relations
+# ship 领域知识
 
-## serverIds
-- IntegralZoneName
-- _BeastPiratesServerGroup
-- _IntegralServer
-- _ShipGroupServer
-- _UnionSLGServerGroup
+> 在此填入你的项目中 ship 相关的表引用和字段说明。
 
+## 相关表
 
+<!-- 
+| 表名 | 说明 |
+|------|------|
+| 表名1 | 用途说明 |
+-->
+
+## 关键字段
+
+<!-- 填入此领域的关键字段说明 -->

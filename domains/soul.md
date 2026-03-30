@@ -1,25 +1,15 @@
-# Soul System Relations
+# soul 领域知识
 
-## Haki霸气系统
-- HakiHero
-- HakiSkill
-- HakiSkillLevel
-- HakiSkillLink
-- HakiSkillPos
-- HakiLink
-- HakiTask
-- HakiTaskReward
+> 在此填入你的项目中 soul 相关的表引用和字段说明。
 
+## 相关表
 
-## SuperSoul超级魂系统
-- SuperSoul
-- SuperSoulBuff
-- SuperSoulExp
-- SuperSoulAdvancedAmend
-- SuperSoulAmendCost
-- SuperSoulAmendType
-- SuperSoulAmendTypeText
-- SuperSoulAmendQualityText
-- SuperSoulAmendTypeWeight
+<!-- 
+| 表名 | 说明 |
+|------|------|
+| 表名1 | 用途说明 |
+-->
 
+## 关键字段
 
+<!-- 填入此领域的关键字段说明 -->
