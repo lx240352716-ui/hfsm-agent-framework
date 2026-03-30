@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """HFSM 测试 — 数据驱动 design router + 多角色队列"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+from constants import AGENTS_DIR
 
-COORDINATOR_DATA = os.path.join(r'G:\op_design', 'references', 'agents', 'coordinator_memory', 'data')
+COORDINATOR_DATA = os.path.join(AGENTS_DIR, 'coordinator_memory', 'data')
 
 
 def _write_output(dispatch):

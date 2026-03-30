@@ -21,7 +21,7 @@ from transitions.extensions import HierarchicalMachine
 
 # ── 路径常量 ────────────────────────────────────────
 
-AGENTS_DIR = os.path.join(r'G:\op_design', 'references', 'agents')
+AGENTS_DIR = os.path.join(REFERENCES_DIR, 'agents')
 
 # Agent workflow.py 路径映射
 WORKFLOW_PATHS = {
@@ -85,7 +85,7 @@ class DesignWorkflow:
         """dispatch 完成后自动调用：读 output.json → 建队列 → 路由第一个"""
         import json
         output_path = os.path.join(
-            r'G:\op_design', 'references', 'agents', 'coordinator_memory', 'data', 'output.json')
+            BASE_DIR, 'references', 'agents', 'coordinator_memory', 'data', 'output.json')
         if os.path.exists(output_path):
             with open(output_path, 'r', encoding='utf-8') as f:
                 output = json.load(f)

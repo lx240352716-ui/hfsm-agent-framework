@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """精确查沙·鳄鱼"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 from table_reader import query_db
 
 print("=== 沙·鳄鱼 Item ===")

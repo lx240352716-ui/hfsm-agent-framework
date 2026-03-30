@@ -12,7 +12,7 @@ import os
 
 # ── 路径常量 ──
 
-AGENTS_DIR = os.path.join(r'G:\op_design', 'references', 'agents')
+AGENTS_DIR = os.path.join(REFERENCES_DIR, 'agents')
 COORDINATOR_DATA = os.path.join(AGENTS_DIR, 'coordinator_memory', 'data')
 COMBAT_DATA = os.path.join(AGENTS_DIR, 'combat_memory', 'data')
 NUMERICAL_DATA = os.path.join(AGENTS_DIR, 'numerical_memory', 'data')

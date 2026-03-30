@@ -4,10 +4,11 @@
 需求：清明节礼包（仿觉醒徽章礼盒·沙鳄鱼）
 """
 import sys, os, json, time
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'process'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'process'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'qa_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'numerical_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'executor_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'qa_memory', 'process'))
+from constants import AGENTS_DIR
 from table_reader import max_id, get_columns
 
 t0 = time.time()
@@ -40,7 +41,7 @@ coordinator_output = {
     "dispatch_to": "numerical",
 }
 
-coord_data_dir = os.path.join(r'G:\op_design', 'references', 'agents', 'coordinator_memory', 'data')
+coord_data_dir = os.path.join(AGENTS_DIR, 'coordinator_memory', 'data')
 os.makedirs(coord_data_dir, exist_ok=True)
 with open(os.path.join(coord_data_dir, 'output.json'), 'w', encoding='utf-8') as f:
     json.dump(coordinator_output, f, ensure_ascii=False, indent=2)
@@ -60,7 +61,7 @@ print("  L1 数值策划")
 print("=" * 60)
 
 # 先写入 numerical input
-num_data_dir = os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'data')
+num_data_dir = os.path.join(AGENTS_DIR, 'numerical_memory', 'data')
 os.makedirs(num_data_dir, exist_ok=True)
 
 num_input = {

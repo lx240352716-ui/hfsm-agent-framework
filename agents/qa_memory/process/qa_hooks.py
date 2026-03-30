@@ -18,9 +18,9 @@ import glob
 from datetime import datetime
 
 # ── 路径設置 ──
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'combat'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'tools'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'scripts', 'combat'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'scripts', 'tools'))
 
 from constants import agent_paths
 from hook_utils import load_json as _load_json, save_json as _save_json

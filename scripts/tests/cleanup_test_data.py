@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """按 '引用了 76000xxx 的就删' 逻辑清除所有测试数据"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 from table_reader import query_db, get_columns, _get_table_path, refresh_index, max_id, get_com_excel, open_workbook, close_com_excel
 
 # ── 1. 查找要删的行 ──

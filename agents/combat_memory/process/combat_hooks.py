@@ -15,7 +15,7 @@ import json
 from datetime import datetime
 
 # ── 路径 ──
-BASE = os.path.join(r'G:\op_design', 'references')
+BASE = REFERENCES_DIR
 sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))
 
 from constants import agent_paths

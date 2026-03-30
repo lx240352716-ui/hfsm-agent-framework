@@ -5,7 +5,7 @@ import json
 import os
 import sys
 
-BASE_DIR = os.path.join(r'G:\op_design', 'references')
+BASE_DIR = REFERENCES_DIR
 
 # 所有 transitions.json 文件路径
 TRANSITION_FILES = {

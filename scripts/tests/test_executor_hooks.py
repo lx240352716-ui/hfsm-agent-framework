@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """测试新 executor hooks（4 状态: execute → align → fill → fill_confirm → write）"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'executor_memory', 'process'))
+from constants import AGENTS_DIR
 import executor_hooks as hooks
 
 print("=" * 60)
@@ -36,7 +37,7 @@ for tbl, ref in r3.get('reference_data', {}).items():
 
 # 4. 模拟 LLM 填值 → draft_filled.json
 print("\n── 4. 模拟 LLM 填值 → draft_filled.json ──")
-DATA_DIR = os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'data')
+DATA_DIR = os.path.join(AGENTS_DIR, 'executor_memory', 'data')
 align_result = json.load(open(os.path.join(DATA_DIR, 'align_result.json'), encoding='utf-8'))
 draft = {"tables": {}}
 for tbl, rows in align_result.get('tables', {}).items():

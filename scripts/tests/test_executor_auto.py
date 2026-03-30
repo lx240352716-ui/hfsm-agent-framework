@@ -4,7 +4,8 @@
 模拟：design_complete → 进入 executor → 自动调 on_enter_execute
 """
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+from constants import AGENTS_DIR
 
 from hfsm_registry import build_hfsm
 
@@ -53,7 +54,7 @@ print(f"  当前状态: {model.state}")
 
 # 4. 检查 on_enter_execute 是否被自动调用
 # 查看 execute_result.json 是否生成
-EXEC_DATA = os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'data')
+EXEC_DATA = os.path.join(AGENTS_DIR, 'executor_memory', 'data')
 result_path = os.path.join(EXEC_DATA, 'execute_result.json')
 
 if os.path.exists(result_path):

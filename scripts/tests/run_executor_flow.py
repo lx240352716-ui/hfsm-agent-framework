@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """端到端验证：L2(5状态) + L3(3状态) 分离流程"""
 import sys, os, time
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'process'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'qa_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'executor_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'qa_memory', 'process'))
+from constants import AGENTS_DIR
 from table_reader import max_id, get_columns
 
 # 记录初始 max_id
@@ -55,7 +56,7 @@ for tbl, cnt in r.get('results', {}).items():
 
 # 验证 executor_done.json 存在
 import json
-done_path = os.path.join(r'G:\op_design\references\agents\executor_memory', 'data', 'executor_done.json')
+done_path = os.path.join(os.path.join(AGENTS_DIR, 'executor_memory'), 'data', 'executor_done.json')
 assert os.path.exists(done_path), "executor_done.json not found!"
 done = json.load(open(done_path, 'r', encoding='utf-8'))
 print(f"\n  executor_done.json status: {done['status']} ✅")
@@ -78,7 +79,7 @@ if r_qa['qa_result'] != 'pass':
     print("  继续测试 merge 以验证完整流程...")
     # 仍然需要生成 qa_result.json 让 done 能读到
     import json
-    qa_dir = os.path.join(r'G:\op_design\references\agents\qa_memory')
+    qa_dir = os.path.join(os.path.join(AGENTS_DIR, 'qa_memory'))
     os.makedirs(qa_dir, exist_ok=True)
     with open(os.path.join(qa_dir, 'qa_result.json'), 'w', encoding='utf-8') as f:
         json.dump({"_schema": "qa_result", "result": "pass_with_warnings", "output_dir": r_qa.get('output_dir', '')}, f)

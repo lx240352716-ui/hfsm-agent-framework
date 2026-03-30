@@ -8,14 +8,15 @@ execute (7步管道) → review (用户确认)
 """
 import sys, os, json
 
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'process'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'numerical_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'executor_memory'))
+from constants import AGENTS_DIR
 
 from table_reader import get_columns, query_db
 
-NUMERICAL_OUTPUT = os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'data', 'output.json')
-EXECUTOR_DATA = os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'data')
+NUMERICAL_OUTPUT = os.path.join(AGENTS_DIR, 'numerical_memory', 'data', 'output.json')
+EXECUTOR_DATA = os.path.join(AGENTS_DIR, 'executor_memory', 'data')
 
 print("=" * 60)
 print("执行策划模拟 — 方案 C（管道式）")

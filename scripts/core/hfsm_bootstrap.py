@@ -13,13 +13,14 @@ import sys
 import json
 
 # 路径设置
-SCRIPTS_DIR = os.path.join(r'G:\op_design', 'references', 'scripts')
+SCRIPTS_DIR = os.path.join(REFERENCES_DIR, 'scripts')
 CORE_DIR = os.path.join(SCRIPTS_DIR, 'core')
 OUTPUT_DIR = os.path.join(SCRIPTS_DIR, 'output')
 STATE_FILE = os.path.join(OUTPUT_DIR, 'task_state.json')
-AGENTS_DIR = os.path.join(r'G:\op_design', 'references', 'agents')
+AGENTS_DIR = os.path.join(REFERENCES_DIR, 'agents')
 
 sys.path.insert(0, CORE_DIR)
+from constants import AGENTS_DIR, CORE_DIR
 from hfsm_registry import build_hfsm
 
 # Agent → 知识库目录映射

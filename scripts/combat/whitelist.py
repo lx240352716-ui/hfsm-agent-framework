@@ -5,7 +5,7 @@ import os
 import sys
 import json
 
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 from constants import WHITELIST_PATH
 
 _whitelist_cache = None

@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """用 get_columns()['en'] 重新清洗 numerical output.json，只保留 Row6 字段"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+from constants import AGENTS_DIR
 from table_reader import get_columns
 
-OUTPUT_PATH = os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'data', 'output.json')
+OUTPUT_PATH = os.path.join(AGENTS_DIR, 'numerical_memory', 'data', 'output.json')
 
 with open(OUTPUT_PATH, 'r', encoding='utf-8') as f:
     output = json.load(f)

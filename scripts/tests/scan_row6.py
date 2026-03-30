@@ -2,7 +2,7 @@
 """扫描所有读 Row6 / 字段映射的代码"""
 import os, re
 
-ROOT = r'G:\op_design\references'
+ROOT = REFERENCES_DIR
 KEYWORDS = [
     'cn_to_en_map',
     'build_header_map', 

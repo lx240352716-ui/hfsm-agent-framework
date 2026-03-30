@@ -14,7 +14,7 @@ import json
 import re
 
 # ── 路径 ──
-BASE = os.path.join(r'G:\op_design', 'references')
+BASE = REFERENCES_DIR
 
 # 确保 core 在 sys.path
 sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))

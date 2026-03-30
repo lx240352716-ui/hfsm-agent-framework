@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """machine.py 引擎骨架验证测试"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 from machine import Machine
 
 def test_basic():

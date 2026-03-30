@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """真实数据测试：直接调 L3 QA hooks（不用测试脚本）"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'qa_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'qa_memory', 'process'))
 
 from qa_hooks import on_enter_qa, on_enter_merge, on_enter_done
 import json

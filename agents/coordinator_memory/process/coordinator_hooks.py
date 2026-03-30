@@ -16,7 +16,7 @@ from datetime import datetime
 
 # ── 路径常量 ──
 
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', 'scripts', 'core'))
 
 from constants import REFERENCES_DIR, AGENTS_DIR, agent_paths
 from hook_utils import load_md_batch, init_pending, append_pending

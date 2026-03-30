@@ -22,8 +22,8 @@
 
 ```python
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-from utils import query_db, read_table
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+from constants import REFERENCES_DIR, AGENTS_DIR
 ```
 
 ## 命名前缀

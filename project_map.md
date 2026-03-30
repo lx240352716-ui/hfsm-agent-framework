@@ -1,11 +1,11 @@
-# 项目路径说明书 — 填表助手 (op_design)
+# 项目路径说明书 — HFSM Agent Framework
 
 > 最后更新：2026-03-23
 
 ## 总览
 
 ```
-g:\op_design\
+<your_project>/
 ├── .agents/workflows/        ← AI workflow 定义（斜杠命令）
 ├── CLAUDE.md                 ← AI 全局规则
 ├── excel/                    ← 源数据 Excel 文件（1264 个）

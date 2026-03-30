@@ -3,12 +3,12 @@
 Workflow 框架测试。
 
 运行方式:
-    cd G:\op_design\references\scripts\tests
+    cd scripts/tests
     python test_pipeline.py
 """
 
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 
 from workflow import Workflow, Step, WorkflowError, WorkflowAbort
 

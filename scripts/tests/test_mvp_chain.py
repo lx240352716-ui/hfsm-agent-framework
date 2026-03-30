@@ -21,7 +21,7 @@ import shutil
 import traceback
 
 # ── 路径设置 ────────────────────────────────────────
-SCRIPTS_DIR = os.path.join(r'G:\op_design', 'references', 'scripts')
+SCRIPTS_DIR = os.path.join(REFERENCES_DIR, 'scripts')
 sys.path.insert(0, os.path.join(SCRIPTS_DIR, 'core'))
 sys.path.insert(0, os.path.join(SCRIPTS_DIR, 'combat'))
 sys.path.insert(0, os.path.join(SCRIPTS_DIR, 'tools'))
@@ -195,8 +195,9 @@ def test_l2_execution(handoff_data):
         return None
 
     # 添加 executor_hooks 所在路径
-    hooks_dir = os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory')
+    hooks_dir = os.path.join(AGENTS_DIR, 'executor_memory')
     sys.path.insert(0, hooks_dir)
+from constants import REFERENCES_DIR, AGENTS_DIR
 
     import executor_hooks as hooks
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """验证 max_id 到底能不能用英文列名查"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 from table_reader import max_id, cn_to_en_map
 
 for tbl, pk_cn, pk_en in [

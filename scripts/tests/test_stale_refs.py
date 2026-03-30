@@ -14,7 +14,7 @@
 import os
 import re
 
-PROJECT_ROOT = os.path.join(r'G:\op_design', 'references')
+PROJECT_ROOT = REFERENCES_DIR
 SCRIPTS_DIR = os.path.join(PROJECT_ROOT, 'scripts')
 AGENTS_DIR = os.path.join(PROJECT_ROOT, 'agents')
 

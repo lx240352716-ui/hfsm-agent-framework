@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """验证 cn_to_en_map + 用英文字段名重新生成 output.json"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'numerical_memory', 'process'))
+from constants import AGENTS_DIR
 import numerical_hooks as hooks
 from table_reader import max_id
 
-DATA = os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'data')
+DATA = os.path.join(AGENTS_DIR, 'numerical_memory', 'data')
 
 # 1. 验证 cn_to_en_map
 print("=== cn_to_en_map 验证 ===\n")

@@ -4,13 +4,14 @@
 需求："新增一个新角色蜂巢岛卡普，帮我配置所有的数据"
 """
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'coordinator_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'coordinator_memory', 'process'))
+from constants import AGENTS_DIR
 
 from hfsm_registry import build_hfsm
 import coordinator_hooks as hooks
 
-DATA_DIR = os.path.join(r'G:\op_design', 'references', 'agents', 'coordinator_memory', 'data')
+DATA_DIR = os.path.join(AGENTS_DIR, 'coordinator_memory', 'data')
 
 print("=" * 60)
 print("模拟主策划流程 v3")

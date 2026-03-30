@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """模拟 locate: 查礼包参考数据"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 from table_reader import query_db
 
 print("=== 查 Item 表中的礼包参考数据 ===\n")

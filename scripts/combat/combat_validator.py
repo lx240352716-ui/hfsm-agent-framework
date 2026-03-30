@@ -4,7 +4,7 @@
 import os
 import sys
 
-SCRIPTS_DIR = os.path.join(r'G:\op_design', 'references', 'scripts')
+SCRIPTS_DIR = os.path.join(REFERENCES_DIR, 'scripts')
 sys.path.insert(0, os.path.join(SCRIPTS_DIR, 'core'))
 sys.path.insert(0, os.path.join(SCRIPTS_DIR, 'workflow'))
 

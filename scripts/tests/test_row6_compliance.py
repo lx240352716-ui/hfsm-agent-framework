@@ -15,7 +15,7 @@
 import os
 import re
 
-PROJECT_ROOT = os.path.join(r'G:\op_design', 'references')
+PROJECT_ROOT = REFERENCES_DIR
 
 # ── 规则定义 ──────────────────────────────────────────
 

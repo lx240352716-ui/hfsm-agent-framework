@@ -9,7 +9,7 @@
 """
 import sys, os, json, re
 
-REGISTRY_PATH = os.path.join(r'G:\op_design', 'references', 'scripts', 'configs', 'table_registry.json')
+REGISTRY_PATH = os.path.join(CONFIGS_DIR, 'table_registry.json')
 
 def search(keyword, show_fields=False, show_sample=False):
     with open(REGISTRY_PATH, 'r', encoding='utf-8') as f:
@@ -28,7 +28,7 @@ def search(keyword, show_fields=False, show_sample=False):
 
     if show_fields and matches:
         # 尝试从 SQLite 取字段
-        sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
         from table_reader import get_columns
         print()
         for name, _ in sorted(matches):
@@ -45,7 +45,8 @@ def search(keyword, show_fields=False, show_sample=False):
                 print(f"  === {name}: 无法取字段 ({e}) ===\n")
 
     if show_sample and matches:
-        sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+from constants import CONFIGS_DIR
         from table_reader import query_db
         print()
         for name, _ in sorted(matches):

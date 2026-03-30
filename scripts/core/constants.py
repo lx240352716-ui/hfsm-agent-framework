@@ -10,9 +10,28 @@ import os
 
 # ══════════════════════════════════════════════════════════════
 # 路径常量
+#   优先从环境变量 WORKSPACE_DIR 读取项目根目录，
+#   没有则自动推算（constants.py 在 scripts/core/ 下，往上两级 = 项目根）。
 # ══════════════════════════════════════════════════════════════
 
-BASE_DIR = r'G:\op_design'
+# 尝试加载 .env（项目根目录下）
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.normpath(os.path.join(_THIS_DIR, '..', '..'))
+_ENV_PATH = os.path.join(_PROJECT_ROOT, '.env')
+if os.path.exists(_ENV_PATH):
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(_ENV_PATH)
+    except ImportError:
+        # dotenv 未安装时手动解析 .env
+        with open(_ENV_PATH, encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    os.environ.setdefault(k.strip(), v.strip())
+
+BASE_DIR = os.environ.get('WORKSPACE_DIR', _PROJECT_ROOT)
 EXCEL_DIR = os.path.join(BASE_DIR, 'excel')
 REFERENCES_DIR = os.path.join(BASE_DIR, 'references')
 OUTPUT_DIR = os.path.join(REFERENCES_DIR, 'output')
@@ -46,11 +65,10 @@ def agent_paths(agent_name):
 #   _PK_HINT 仅在自动推断失败时作为 fallback。
 # ══════════════════════════════════════════════════════════════
 
+# 填入你的项目表主键映射，格式：'表名': '主键列名(Row6英文)'
+# 仅在 SQLite 自动推断失败时作为 fallback
 _PK_HINT = {
-    '_Buff': 'buffId',
-    'BuffActive': 'buffId',
-    'FightBuff': 'fightBuffId',
-    '_BuffCondition': 'conditionId',
+    # 示例: '_Buff': 'buffId',
 }
 
 _pk_cache = {}
@@ -154,20 +172,9 @@ def get_sqlite_col(table_name, row6_en_name):
 # 必填字段契约（Row6 英文字段名，设计 JSON 必须包含）
 # ══════════════════════════════════════════════════════════════
 
+# 填入你的项目必填字段契约，格式：'表名': ['字段1', '字段2', ...]
 REQUIRED_FIELDS = {
-    '_Buff': [
-        'perfactor', 'isDebuff', 'canBeCleared',
-        'afterActiveCount', 'beforeActiveCount', 'round',
-        'attCount', 'defCount', 'limitedCount',
-        'accumIdCount', 'someData',
-        'additionalBuffs',
-    ],
-    'BuffActive': ['buffId', 'grade', 'buffParam1', 'buffParam1Levelup'],
-    'FightBuff': [
-        'buffTimings', 'buffTargets', 'buffConditions', 'buffOddRules',
-        'buffList', 'buffGradeList',
-    ],
-    '_BuffCondition': ['conditionClass', 'conditionParam'],
+    # 示例: '_Buff': ['perfactor', 'isDebuff'],
 }
 
 # ══════════════════════════════════════════════════════════════

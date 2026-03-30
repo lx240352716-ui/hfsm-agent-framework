@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """查节日礼包参考数据"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
 from table_reader import query_db
 
 print("=== Item 表: 节日/活动礼包 ===\n")

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """测试新 hooks 功能：locate 自动搜表 + fill + output max_id"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'numerical_memory', 'process'))
+from constants import AGENTS_DIR
 import numerical_hooks as hooks
 
-DATA = os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'data')
+DATA = os.path.join(AGENTS_DIR, 'numerical_memory', 'data')
 
 print("=" * 60)
 print("测试新 hooks 功能")

@@ -9,9 +9,10 @@
 """
 import sys, os, json
 
-BASE = r'G:\op_design\references'
+BASE = REFERENCES_DIR
 sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))
 sys.path.insert(0, os.path.join(BASE, 'agents', 'numerical_memory', 'process'))
+from constants import REFERENCES_DIR
 
 import numerical_hooks as hooks
 

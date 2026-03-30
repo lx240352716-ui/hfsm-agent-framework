@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """清除残留测试数据 → 真实执行 L2+L3 全链路"""
 import sys, os, time, json, glob
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'qa_memory', 'process'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'qa_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'agents', 'executor_memory', 'process'))
 from table_reader import max_id, get_columns, _get_table_path, refresh_index, get_com_excel, open_workbook, close_com_excel
 
 original_ids = {"Item": 76000016, "_DropGroup": 300110, "_ShopItem": 214005}

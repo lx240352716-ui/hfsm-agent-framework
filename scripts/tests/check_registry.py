@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-r = json.load(open(r'G:\op_design\references\scripts\configs\table_registry.json', 'r', encoding='utf-8'))
+r = json.load(open(os.path.join(CONFIGS_DIR, 'table_registry.json'), 'r', encoding='utf-8'))
 print(f"总表数: {len(r)}")
 print(f"_DropGroup in registry: {'_DropGroup' in r}")
 print(f"_ShopItem in registry: {'_ShopItem' in r}")
