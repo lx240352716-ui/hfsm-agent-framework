@@ -203,14 +203,9 @@ references/
 | 文件/目录 | 说明 |
 |-----------|------|
 | `design_index.md` | 设计文档总索引 |
-| `factor_lookup.md` | Buff 因子查找表 |
-| `target_lookup.md` | Buff 目标查找表 |
+| `factor_lookup.md` | 因子查找表 |
+| `target_lookup.md` | 目标查找表 |
 | `timing_lookup.md` | 时机查找表 |
-| `standalone_client_plan.md` | 独立客户端计划 |
-| `data/怀旧服数值总表.xlsx` | 怀旧服数值参考 |
-| `data/数值总表.xlsx` | 主数值总表 |
-| `data/战斗表.xlsx` | 战斗配置参考 |
-| `data/时机.xlsx` | 时机定义参考 |
 | `templates/` | 模板文档 |
 
 ---

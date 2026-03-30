@@ -16,10 +16,10 @@
 from table_reader import query_db, get_headers
 
 # 查某张表的列名
-get_headers("fight/FightBuff.xlsx")
+get_headers("your_table.xlsx")
 
 # 查某张表的数据
-query_db("SELECT * FROM [FightBuff] WHERE fightBuffId=123")
+query_db("SELECT * FROM [YourTable] WHERE id=123")
 
 # 查哪些表有某个字段（替代已删除的 static_relations.md）
 query_db("SELECT name FROM sqlite_master WHERE type='table'")
