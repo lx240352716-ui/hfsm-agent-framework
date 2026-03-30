@@ -14,10 +14,12 @@ import json
 import re
 
 # ── 路径 ──
-BASE = REFERENCES_DIR
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+_CORE_DIR = os.path.normpath(os.path.join(_THIS_DIR, '..', '..', '..', 'scripts', 'core'))
+sys.path.insert(0, _CORE_DIR)
 
-# 确保 core 在 sys.path
-sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))
+from constants import REFERENCES_DIR
+BASE = REFERENCES_DIR
 
 from constants import CONFIGS_DIR, agent_paths
 

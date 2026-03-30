@@ -8,11 +8,14 @@
 
 import json
 import os
-
+import sys
 
 # ── 路径常量 ──
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _THIS_DIR not in sys.path:
+    sys.path.insert(0, _THIS_DIR)
 
-AGENTS_DIR = os.path.join(REFERENCES_DIR, 'agents')
+from constants import REFERENCES_DIR, AGENTS_DIR
 COORDINATOR_DATA = os.path.join(AGENTS_DIR, 'coordinator_memory', 'data')
 COMBAT_DATA = os.path.join(AGENTS_DIR, 'combat_memory', 'data')
 NUMERICAL_DATA = os.path.join(AGENTS_DIR, 'numerical_memory', 'data')

@@ -16,12 +16,16 @@ import importlib.util
 import os
 import sys
 
+# 确保 constants.py 可导入
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+if _THIS_DIR not in sys.path:
+    sys.path.insert(0, _THIS_DIR)
+
+from constants import AGENTS_DIR, REFERENCES_DIR, BASE_DIR
 from transitions.extensions import HierarchicalMachine
 
 
 # ── 路径常量 ────────────────────────────────────────
-
-AGENTS_DIR = os.path.join(REFERENCES_DIR, 'agents')
 
 # Agent workflow.py 路径映射
 WORKFLOW_PATHS = {

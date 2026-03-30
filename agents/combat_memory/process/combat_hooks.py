@@ -15,8 +15,12 @@ import json
 from datetime import datetime
 
 # ── 路径 ──
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+_CORE_DIR = os.path.normpath(os.path.join(_THIS_DIR, '..', '..', '..', 'scripts', 'core'))
+sys.path.insert(0, _CORE_DIR)
+
+from constants import REFERENCES_DIR
 BASE = REFERENCES_DIR
-sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))
 
 from constants import agent_paths
 from hook_utils import (
