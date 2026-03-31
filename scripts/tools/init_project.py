@@ -262,6 +262,35 @@ for agent_name, files in AGENT_TEMPLATES.items():
 
 ok(f"生成 {created} 个知识模板，跳过 {skipped} 个已有文件")
 
+# ─── Step 6: 复制 .agents/ 到工作区根目录 ─────────────────────
+print("\n═══ Step 6: 安装 AI 工作流 ═══\n")
+
+import shutil
+
+# .agents/ 在 references/ (PROJECT_ROOT) 下，需要复制到 WORKSPACE_DIR/
+src_agents = os.path.join(PROJECT_ROOT, '.agents')
+dst_agents = os.path.join(workspace, '.agents')
+
+if os.path.isdir(src_agents):
+    # 只复制 workflows/ 目录
+    src_wf = os.path.join(src_agents, 'workflows')
+    dst_wf = os.path.join(dst_agents, 'workflows')
+    if os.path.isdir(src_wf):
+        os.makedirs(dst_wf, exist_ok=True)
+        copied_wf = 0
+        for f in os.listdir(src_wf):
+            if f.endswith('.md'):
+                src_f = os.path.join(src_wf, f)
+                dst_f = os.path.join(dst_wf, f)
+                shutil.copy2(src_f, dst_f)
+                copied_wf += 1
+        ok(f"复制 {copied_wf} 个工作流到 {dst_wf}")
+        info("编辑器将在此目录发现 /design 等 AI 工作流命令")
+    else:
+        warn("未找到 .agents/workflows/ 目录")
+else:
+    warn("未找到 .agents/ 目录（跳过工作流安装）")
+
 # ─── 最终 Checklist ──────────────────────────────────────────
 print("\n" + "═" * 50)
 print("  🎉 初始化完成！接下来请手动完成：")
@@ -273,7 +302,6 @@ print("""
   □ 4. 填写 agents/qa_memory/knowledge/ 下的 QA 校验规则
   □ 5. 填写 agents/combat_memory/knowledge/ 下的战斗规则（如有）
   □ 6. 编辑 scripts/core/constants.py 中的 _PK_HINT 和 REQUIRED_FIELDS
-  □ 7. 如需导入 Excel 到 SQLite，运行: python scripts/tools/gen_table_dir.py
 
   📖 详见 README.md 第 5 节 "填写知识库"
 """)
