@@ -66,10 +66,7 @@ def main():
     for xlsx_path in xlsx_files:
         basename = os.path.splitext(os.path.basename(xlsx_path))[0]
         rel_path = os.path.relpath(xlsx_path, EXCEL_DIR)
-        registry[basename] = {
-            "path": rel_path,
-            "sheet": 0,
-        }
+        registry[basename] = rel_path
     
     with open(registry_path, 'w', encoding='utf-8') as f:
         json.dump(registry, f, ensure_ascii=False, indent=2)
@@ -81,12 +78,24 @@ def main():
     
     from table_reader import refresh_index
     t_idx = time.time()
-    result = refresh_index()
+    # refresh_index 需要逐表调用: refresh_index(xlsx_path, table_name, header_row=1)
+    # 只索引 >1MB 的大表（小表直接读更快）
+    indexed, skipped = 0, 0
+    for tbl_name, rel_path in registry.items():
+        xlsx_path = os.path.join(EXCEL_DIR, rel_path)
+        if not os.path.exists(xlsx_path):
+            continue
+        size_mb = os.path.getsize(xlsx_path) / (1024 * 1024)
+        if size_mb > 1.0:
+            try:
+                refresh_index(xlsx_path, tbl_name, header_row=1)
+                indexed += 1
+            except Exception as e:
+                print(f"  ⚠️ {tbl_name} 索引失败: {e}")
+        else:
+            skipped += 1
     idx_time = time.time() - t_idx
-    
-    success = result.get('success', 0) if isinstance(result, dict) else 0
-    failed = result.get('failed', 0) if isinstance(result, dict) else 0
-    print(f"  ✅ 索引完成: 成功 {success}, 失败 {failed}, 耗时 {idx_time:.1f}s")
+    print(f"  ✅ 索引完成: 已索引 {indexed} 张大表, 跳过 {skipped} 张小表, 耗时 {idx_time:.1f}s")
 
     # ── Step 4: 学习词表 ──
     step(4, total_steps, "学习词表 (table_vocabulary.json)")
@@ -97,7 +106,7 @@ def main():
     vocab_time = time.time() - t_vocab
     
     if vocab:
-        print(f"  ✅ 词表学习完成: {len(vocab.get('header_row', {}))} 种行结构, 耗时 {vocab_time:.1f}s")
+        print(f"  ✅ 词表学习完成: {len(vocab)} 个元数据关键词, 耗时 {vocab_time:.1f}s")
     else:
         print(f"  ⚠️ 词表学习无结果（可能表结构特殊）")
 
