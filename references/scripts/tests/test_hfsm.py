@@ -28,8 +28,9 @@ def test_combat_then_numerical():
     assert 'design_combat' in model.state
     print("  ✅ 自动路由 → combat")
 
-    # combat 做完
-    model.split_done(); model.categorize_done(); model.translate_done()
+    # combat 做完（match→split→confirm→categorize→translate→output→review）
+    model.match_done(); model.split_done(); model.confirmed()
+    model.categorize_done(); model.translate_done(); model.output_done()
     # agent_done → router → _route_next → numerical
     model.agent_done()
     assert 'design_numerical' in model.state
@@ -73,7 +74,8 @@ def test_combat_only():
     assert 'design_combat' in model.state
     print("  ✅ 只有 combat")
 
-    model.split_done(); model.categorize_done(); model.translate_done()
+    model.match_done(); model.split_done(); model.confirmed()
+    model.categorize_done(); model.translate_done(); model.output_done()
     model.agent_done()
     assert 'executor' in model.state
     print("  ✅ agent_done → executor (无 numerical)")
