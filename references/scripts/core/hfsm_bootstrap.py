@@ -14,11 +14,11 @@ import sys
 import json
 
 # 路径设置
-SCRIPTS_DIR = os.path.join(r'G:\op_design', 'references', 'scripts')
+SCRIPTS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CORE_DIR = os.path.join(SCRIPTS_DIR, 'core')
 OUTPUT_DIR = os.path.join(SCRIPTS_DIR, 'output')
 STATE_FILE = os.path.join(OUTPUT_DIR, 'task_state.json')
-AGENTS_DIR = os.path.join(r'G:\op_design', 'references', 'agents')
+AGENTS_DIR = os.path.join(os.path.dirname(SCRIPTS_DIR), 'agents')
 
 sys.path.insert(0, CORE_DIR)
 from hfsm_registry import build_hfsm

@@ -12,7 +12,11 @@ import os
 # 路径常量
 # ══════════════════════════════════════════════════════════════
 
-BASE_DIR = r'G:\op_design'
+# ── 动态推断项目根目录 ──
+# core/ → scripts/ → references/ → 项目根
+BASE_DIR = os.environ.get('WORKSPACE_DIR') or os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+)
 EXCEL_DIR = os.path.join(BASE_DIR, 'excel')
 REFERENCES_DIR = os.path.join(BASE_DIR, 'references')
 OUTPUT_DIR = os.path.join(REFERENCES_DIR, 'output')

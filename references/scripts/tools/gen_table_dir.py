@@ -8,11 +8,11 @@
 import json, os, sys, sqlite3
 from collections import defaultdict
 
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 
-REGISTRY_PATH = os.path.join(r'G:\op_design', 'references', 'scripts', 'configs', 'table_registry.json')
-DB_PATH = os.path.join(r'G:\op_design', 'references', 'scripts', 'core', 'table_index.db')
-OUTPUT_PATH = os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'knowledge', 'table_directory.md')
+REGISTRY_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'configs', 'table_registry.json')
+DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core', 'table_index.db')
+OUTPUT_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'numerical_memory', 'knowledge', 'table_directory.md')
 
 with open(REGISTRY_PATH, 'r', encoding='utf-8') as f:
     registry = json.load(f)

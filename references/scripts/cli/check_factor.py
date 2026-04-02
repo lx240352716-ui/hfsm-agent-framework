@@ -10,8 +10,8 @@ import sys
 import os
 import json
 
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'combat'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'combat'))
 from whitelist import validate_factor, register_factor, load_whitelist
 
 if len(sys.argv) < 2:

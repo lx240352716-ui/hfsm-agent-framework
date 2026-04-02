@@ -2,7 +2,7 @@
 """扫描所有读 Row6 / 字段映射的代码"""
 import os, re
 
-ROOT = r'G:\op_design\references'
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 KEYWORDS = [
     'OFFSET 3',
     'OFFSET 2',

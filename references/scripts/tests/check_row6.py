@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """检查各表的 Row6 到底是什么"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import get_columns, query_db
 
 for tbl in ['Item', '_DropGroup', '_ShopItem']:

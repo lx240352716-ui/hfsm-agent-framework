@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """查 Item 表前6行数据，找英文字段名在哪一行"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import query_db
 
 print("=== Item 表前6行 ===\n")

@@ -10,7 +10,7 @@ import sys
 import os
 import json
 
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import query_db
 
 if len(sys.argv) < 2:

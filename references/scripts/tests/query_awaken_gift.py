@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """查 觉醒徽章礼盒（沙·鳄鱼） 的完整配置链"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import query_db
 
 # 1. Item 表找这个礼包

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """查 _ShopItem goodIndex=78 参考行"""
 import sys, os
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import query_db, get_columns
 
 si_cols = get_columns('_ShopItem')

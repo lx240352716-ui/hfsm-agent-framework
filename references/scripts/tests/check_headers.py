@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """验证 output xlsx 的 UsedRange 是否正确"""
 import sys, os, glob
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import get_com_excel, close_com_excel
 
-output_dir = glob.glob(os.path.join(r'G:\op_design\references\output', '清明节礼包*'))[0]
+output_dir = glob.glob(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'output', '清明节礼包*'))[0]
 excel = get_com_excel()
 
 for xlsx in glob.glob(os.path.join(output_dir, '*.xlsx')):

@@ -5,8 +5,8 @@
 """
 import os, json
 
-EXCEL_DIR = os.path.join(r'G:\op_design', 'excel')
-OUTPUT = os.path.join(r'G:\op_design', 'references', 'scripts', 'configs', 'table_registry.json')
+EXCEL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), 'excel')
+OUTPUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'configs', 'table_registry.json')
 
 registry = {}
 

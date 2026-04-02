@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """L2 执行策划 + L3 QA — 真实运行"""
 import sys, os, time, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'process'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'qa_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'executor_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'qa_memory', 'process'))
 from table_reader import max_id, get_columns
 import executor_hooks as l2
 from qa_hooks import on_enter_qa, on_enter_merge, on_enter_done
@@ -23,7 +23,7 @@ print("\n[L2-2/5] align")
 r = l2.on_enter_align()
 print(f"  status={r['status']}")
 # 看 align_report
-ar = json.load(open(os.path.join(r'G:\op_design\references\agents\executor_memory\data', 'align_result.json'), encoding='utf-8'))
+ar = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'executor_memory', 'data', 'align_result.json'), encoding='utf-8'))
 for tbl, rpt in ar.get('align_report', {}).items():
     print(f"  {tbl}: filled={len(rpt.get('filled',[]))}, unfilled={len(rpt.get('unfilled',[]))}")
 
@@ -36,7 +36,7 @@ print("\n[L2-4/5] fill_confirm")
 r = l2.on_enter_fill_confirm()
 print(f"  uncertain={r.get('uncertain_count', 0)}")
 # 看 filled_result.json 里的 _ShopItem 数据，确认 overrides 是否生效
-fr = json.load(open(os.path.join(r'G:\op_design\references\agents\executor_memory\data', 'filled_result.json'), encoding='utf-8'))
+fr = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'executor_memory', 'data', 'filled_result.json'), encoding='utf-8'))
 for tbl, rows in fr.get('tables', {}).items():
     if rows:
         # 只打印关键字段

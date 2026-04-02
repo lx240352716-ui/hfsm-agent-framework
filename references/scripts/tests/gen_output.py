@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """output 阶段: 自动分配ID + 组装最终 output.json"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import query_db, max_id
 
-DATA_DIR = os.path.join(r'G:\op_design', 'references', 'agents', 'numerical_memory', 'data')
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'numerical_memory', 'data')
 
 # 1. 分配 ID
 item_next = (max_id('Item', '物品id') or 0) + 1

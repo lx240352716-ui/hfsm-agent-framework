@@ -3,11 +3,11 @@
 完整执行策划管道 — 4 状态端到端
 """
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'process'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'executor_memory', 'process'))
 import executor_hooks as hooks
 
-DATA_DIR = os.path.join(r'G:\op_design', 'references', 'agents', 'executor_memory', 'data')
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'agents', 'executor_memory', 'data')
 
 print("=" * 60)
 print("执行策划 — 完整 4 状态管道")

@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 from collections import Counter
 
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from file_ops import get_task_output_dir
 
 

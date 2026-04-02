@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """比较 output xlsx 的 null/zero 与参考行"""
 import sys, os, glob
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import get_com_excel, close_com_excel
 
-output_base = r'G:\op_design\references\output'
+output_base = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'output')
 dirs = sorted(glob.glob(os.path.join(output_base, '清明节礼包*')), key=os.path.getmtime, reverse=True)
 output_dir = dirs[0]
 print(f"检查: {output_dir}\n")

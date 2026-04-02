@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """查彩钻商场的shopType + 每周限购的limitData格式"""
 import sys, os, json
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'core'))
 from table_reader import query_db
 
 # 查 _ShopType 表看商店类型
