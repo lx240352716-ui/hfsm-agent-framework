@@ -68,3 +68,17 @@
 ### `/status` — 看（查进度）
 - [x] `.agents/workflows/status.md`
 - [x] 调用 hfsm_bootstrap.py 报告状态
+
+---
+
+## 下一步：对标 CC 源码优化
+
+> 对比 `d:\claude-code-main` 的 CC 实现，找可借鉴的模式
+
+- [ ] **Session Memory** — CC 后台自动提取对话要点，是否移植到 /design 流程？
+- [ ] **Memory 分类** — CC 有 user/feedback/project/reference 四类，我们是否需要细分？
+- [ ] **Agent Memory scope** — CC 支持 user/project/local 三个 scope，我们只有 project
+- [ ] **Skill 改进反馈** — CC 有 `skillImprovement` 机制，对照我们的复盘规则
+- [ ] **compact（压缩）** — CC 有 `sessionMemoryCompact`，对照我们的长对话处理
+- [ ] **全量路径清理验证** — 每次路径修改 commit 前必须 grep 全量扫描
+
