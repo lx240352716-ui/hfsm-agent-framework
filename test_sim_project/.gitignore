@@ -1,0 +1,10 @@
+# Data and outputs
+agents/*/data/*.json
+!agents/*/data/.gitkeep
+output/
+staging/
+
+# Python
+__pycache__/
+*.py[cod]
+.env

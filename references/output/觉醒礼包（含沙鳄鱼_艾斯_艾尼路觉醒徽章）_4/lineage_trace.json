@@ -1,0 +1,169 @@
+{
+  "trace_id": "觉醒礼包（含沙鳄鱼_艾斯_艾尼路觉醒徽章）_4",
+  "timestamp": "2026-03-23T18:58:03.958771",
+  "requirement": "觉醒礼包（含沙鳄鱼/艾斯/艾尼路觉醒徽章）",
+  "reference": "觉醒徽章礼盒（沙·鳄鱼）619021, 掉落组220010/220011/220012, 商城参考78",
+  "allocated_ids": {
+    "Item": {
+      "pk_field": "itemId",
+      "old_id": "16010012",
+      "new_id": 16010012
+    },
+    "_DropGroup": {
+      "pk_field": "groupId",
+      "old_id": [
+        "300111",
+        "300112",
+        "300113"
+      ],
+      "new_id": [
+        300111,
+        300112,
+        300113
+      ]
+    },
+    "_ShopItem": {
+      "pk_field": "goodIndex",
+      "old_id": "214006",
+      "new_id": 214006
+    }
+  },
+  "id_replacements": {
+    "619021": "16010012",
+    "220010": "300111",
+    "220011": "300112",
+    "220012": "300113",
+    "78": "214006"
+  },
+  "cross_references": [],
+  "tables": {
+    "Item": {
+      "rows_written": 1,
+      "data": [
+        {
+          "itemId": "16010012",
+          "itemType": "1001",
+          "itemSubType": "6",
+          "bagType": "1001",
+          "名字": "觉醒徽章礼盒（沙·鳄鱼）",
+          "nameIndex": "觉醒徽章礼盒（沙·鳄鱼）",
+          "introIndex": "开启后可获得沙·鳄鱼觉醒徽章。",
+          "图标": "item_250136",
+          "useLevel": "1",
+          "quality": "5",
+          "category": "2",
+          "foldCount": "999",
+          "cd": "0",
+          "function": "1017",
+          "params": "300111",
+          "resource": null,
+          "获取途径跳转": null,
+          "resourceDes": null,
+          "canSell": "1",
+          "currencyType": "5",
+          "sellPrice": "100",
+          "bindType": "1",
+          "cantoWarehourse": "1",
+          "pickupByMail": "1",
+          "isPrecious": "0",
+          "canDeal": "0",
+          "buyBackType": "5",
+          "buyBackPrice": "100",
+          "sort": "110",
+          "药品自动使用": "0",
+          "可使用物品的展示类型": "4",
+          "使用结果展示": "2",
+          "commonCdType": null,
+          "commonCd": "1",
+          "expiredTime": null,
+          "combineId": null,
+          "limitNum": null,
+          "是否显示绑定按钮": "1",
+          "左上显示等级(宝石在宝石表里)，目前仅训练道具使用。": null,
+          "获取途径规则修改": null,
+          "物品属性类型显示索引()": null,
+          "needDelete": null,
+          "名字-AP2": null,
+          "canDeployExpireTime": null,
+          "dictServerType": "1"
+        }
+      ]
+    },
+    "_DropGroup": {
+      "rows_written": 3,
+      "data": [
+        {
+          "groupId": "300111",
+          "dropType": "1",
+          "times": "1",
+          "bind": "1",
+          "maxNum": "1",
+          "param": "1001,615009,1,100",
+          "描述": "沙·鳄鱼碎片大礼包",
+          "EmptyKey-H2": null,
+          "EmptyKey-I2": null,
+          "Unnamed: 9": null
+        },
+        {
+          "groupId": "300112",
+          "dropType": "1",
+          "times": "1",
+          "bind": "1",
+          "maxNum": "1",
+          "param": "1001,615010,1,100",
+          "描述": "新世界鲁兹碎片大礼包",
+          "EmptyKey-H2": null,
+          "EmptyKey-I2": null,
+          "Unnamed: 9": null
+        },
+        {
+          "groupId": "300113",
+          "dropType": "1",
+          "times": "1",
+          "bind": "1",
+          "maxNum": "1",
+          "param": "1001,615011,1,100",
+          "描述": "夏洛特玲玲碎片大礼包",
+          "EmptyKey-H2": null,
+          "EmptyKey-I2": null,
+          "Unnamed: 9": null
+        }
+      ]
+    },
+    "_ShopItem": {
+      "rows_written": 1,
+      "data": [
+        {
+          "goodIndex": "214006",
+          "shopType": "0",
+          "orderNum": "-1",
+          "currencyInfo": "1,0,200",
+          "itemInfo": "1001,1000002,1",
+          "openTimeStr": null,
+          "closeTimeStr": null,
+          "discountRate": "10000",
+          "discountStartTime": null,
+          "discountEndTime": null,
+          "page": "1",
+          "modelRes": null,
+          "maxCountPerTrade": "999",
+          "canGiveAway": "0",
+          "limitData": "2,3,0,0,0",
+          "limitParam": null,
+          "banned": "0",
+          "sortId": "3",
+          "showJudge": null,
+          "preJudge": null,
+          "weight": "1",
+          "canConfigCost": "0",
+          "costRefreshCondition": null,
+          "isImportant": "0",
+          "dictServerType": "1",
+          "EmptyKey-Y2": null,
+          "EmptyKey-Z2": null,
+          "EmptyKey-AA2": null
+        }
+      ]
+    }
+  }
+}

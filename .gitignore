@@ -1,0 +1,25 @@
+# ── 游戏配表（太大，不进 git） ──
+excel/
+
+# ── 嵌套 git 仓库 ──
+hfsm-agent-framework/
+hfsm-test-clone/
+
+# ── 运行时产物 ──
+references/scripts/core/table_index.db
+references/scripts/output/
+references/agents/*/data/
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+
+# ── IDE ──
+.vscode/
+.idea/
+
+# ── 系统文件 ──
+Thumbs.db
+.DS_Store
+~$*.xlsx

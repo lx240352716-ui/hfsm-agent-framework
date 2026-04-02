@@ -1,0 +1,15 @@
+[10:38:13] [INFO] 完成 'step_a' → 输出: ['x']
+[10:38:13] [INFO] 完成 'step_sub' → 输出: ['result']
+[10:38:13] [INFO] 完成 'step_c' → 输出: ['final']
+[10:38:13] [INFO] 完成 'step_a' → 输出: ['x']
+[10:38:13] [INFO] 退出子工作流 'sub_test'，输出已映射回主流程
+[10:41:07] [INFO] 完成 'step_a' → 输出: ['x']
+[10:41:07] [INFO] 完成 'step_sub' → 输出: ['result']
+[10:41:07] [INFO] 完成 'step_c' → 输出: ['final']
+[10:41:07] [INFO] 完成 'step_a' → 输出: ['x']
+[10:41:07] [INFO] 退出子工作流 'sub_test'，输出已映射回主流程
+[11:17:00] [INFO] 完成 'step_a' → 输出: ['x']
+[11:17:00] [INFO] 完成 'step_sub' → 输出: ['result']
+[11:17:00] [INFO] 完成 'step_c' → 输出: ['final']
+[11:17:00] [INFO] 完成 'step_a' → 输出: ['x']
+[11:17:00] [INFO] 退出子工作流 'sub_test'，输出已映射回主流程

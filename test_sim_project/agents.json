@@ -1,0 +1,10 @@
+{
+    "agents": {
+        "demo_agent": {
+            "role": "sub",
+            "workflow": "agents/demo_agent/process/demo_agent_workflow.py",
+            "description": "Auto-generated agent"
+        }
+    },
+    "layers": {}
+}

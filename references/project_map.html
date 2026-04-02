@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>填表助手 — 项目路径说明书</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --bg-card: #161922;
+    --bg-card-alt: #1c2030;
+    --border: #2a2e3e;
+    --border-accent: #3b4264;
+    --text: #e2e4ed;
+    --text-dim: #8b90a5;
+    --text-bright: #f8f9fc;
+    --accent-blue: #5b8def;
+    --accent-purple: #9b6dff;
+    --accent-green: #4ade80;
+    --accent-orange: #f59e0b;
+    --accent-pink: #f472b6;
+    --accent-cyan: #22d3ee;
+    --gradient-1: linear-gradient(135deg, #5b8def 0%, #9b6dff 100%);
+    --gradient-2: linear-gradient(135deg, #9b6dff 0%, #f472b6 100%);
+    --gradient-3: linear-gradient(135deg, #4ade80 0%, #22d3ee 100%);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding: 60px 40px;
+    background: var(--bg-card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gradient-1);
+  }
+  .header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .header .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+  .header .badge {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 4px 14px;
+    background: rgba(91,141,239,0.12);
+    color: var(--accent-blue);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-family: 'Fira Code', monospace;
+  }
+
+  /* Architecture diagram */
+  .arch-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 36px;
+  }
+  .arch-diagram h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--text-bright);
+  }
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 10px 0;
+  }
+  .arch-node {
+    padding: 14px 22px;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.92rem;
+    text-align: center;
+    min-width: 100px;
+    position: relative;
+  }
+  .arch-node.l0 { background: rgba(91,141,239,0.15); color: var(--accent-blue); border: 1px solid rgba(91,141,239,0.3); }
+  .arch-node.l1 { background: rgba(155,109,255,0.15); color: var(--accent-purple); border: 1px solid rgba(155,109,255,0.3); }
+  .arch-node.l2 { background: rgba(74,222,128,0.15); color: var(--accent-green); border: 1px solid rgba(74,222,128,0.3); }
+  .arch-node.l3 { background: rgba(244,114,182,0.15); color: var(--accent-pink); border: 1px solid rgba(244,114,182,0.3); }
+  .arch-arrow {
+    font-size: 1.4rem;
+    color: var(--text-dim);
+    padding: 0 8px;
+  }
+  .arch-sub {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header .icon {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+  .section-header .path {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-left: auto;
+  }
+
+  /* Card grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+  }
+  .card-head {
+    padding: 14px 18px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card-alt);
+  }
+  .card-head .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .card-head h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+  .card-head .tag {
+    margin-left: auto;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: 'Fira Code', monospace;
+  }
+  .card-body {
+    padding: 14px 18px 16px;
+  }
+
+  /* File list */
+  .file-list {
+    list-style: none;
+  }
+  .file-list li {
+    display: flex;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(42,46,62,0.5);
+    font-size: 0.88rem;
+    align-items: baseline;
+  }
+  .file-list li:last-child { border-bottom: none; }
+  .file-list .fname {
+    font-family: 'Fira Code', monospace;
+    color: var(--accent-cyan);
+    font-size: 0.82rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .file-list .fdesc {
+    color: var(--text-dim);
+    font-size: 0.84rem;
+  }
+  .file-list .dir { color: var(--accent-orange); }
+  .file-list .dir::before { content: '📁 '; font-size: 0.75rem; }
+  .file-list .fname::before { content: '📄 '; font-size: 0.75rem; }
+
+  /* Tree */
+  .tree-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+  .tree-block .highlight { color: var(--accent-blue); }
+  .tree-block .comment { color: var(--text-dim); font-style: italic; font-family: 'Inter', sans-serif; font-size: 0.8rem; }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg-card-alt);
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(42,46,62,0.5);
+  }
+  td:first-child {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.82rem;
+    color: var(--accent-cyan);
+    white-space: nowrap;
+  }
+  td:last-child {
+    color: var(--text-dim);
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* Full-width card */
+  .card-full {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .card-full .card-head h3 { font-size: 1rem; }
+
+  /* Collapsible */
+  details { margin-bottom: 4px; }
+  details summary {
+    cursor: pointer;
+    padding: 10px 14px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-bright);
+    background: var(--bg-card-alt);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+  details summary:hover { background: var(--bg-card); }
+  details summary::before {
+    content: '▸';
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .detail-body {
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  }
+
+  /* Color dots for agents */
+  .dot-blue { background: var(--accent-blue); }
+  .dot-purple { background: var(--accent-purple); }
+  .dot-green { background: var(--accent-green); }
+  .dot-pink { background: var(--accent-pink); }
+  .dot-orange { background: var(--accent-orange); }
+  .dot-cyan { background: var(--accent-cyan); }
+
+  .tag-blue { background: rgba(91,141,239,0.15); color: var(--accent-blue); }
+  .tag-purple { background: rgba(155,109,255,0.15); color: var(--accent-purple); }
+  .tag-green { background: rgba(74,222,128,0.15); color: var(--accent-green); }
+  .tag-pink { background: rgba(244,114,182,0.15); color: var(--accent-pink); }
+  .tag-orange { background: rgba(245,158,11,0.15); color: var(--accent-orange); }
+  .tag-cyan { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding: 20px;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .icon-blue { background: rgba(91,141,239,0.15); color: var(--accent-blue); }
+  .icon-purple { background: rgba(155,109,255,0.15); color: var(--accent-purple); }
+  .icon-green { background: rgba(74,222,128,0.15); color: var(--accent-green); }
+  .icon-pink { background: rgba(244,114,182,0.15); color: var(--accent-pink); }
+  .icon-orange { background: rgba(245,158,11,0.15); color: var(--accent-orange); }
+  .icon-cyan { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🤖 填表助手 — 项目路径说明书</h1>
+    <p class="subtitle">基于分层状态机 (HFSM) 的 AI 游戏配表工作流系统</p>
+    <span class="badge">g:\op_design</span>
+  </div>
+
+  <!-- Architecture Diagram -->
+  <div class="arch-diagram">
+    <h2>🏗️ 系统架构流程</h2>
+    <div class="arch-flow">
+      <div class="arch-node l0">主策划 L0<span class="arch-sub">coordinator</span></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node l1">战斗策划 L1<span class="arch-sub">combat</span></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node l1">数值策划 L1<span class="arch-sub">numerical</span></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node l2">执行策划 L2<span class="arch-sub">executor</span></div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node l3">QA L3<span class="arch-sub">qa</span></div>
+    </div>
+  </div>
+
+  <!-- Top-level overview -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-blue">📂</div>
+      <h2>根目录总览</h2>
+      <span class="path">g:\op_design\</span>
+    </div>
+    <div class="tree-block">
+<span class="highlight">g:\op_design\</span>
+├── <span class="highlight">.agents/workflows/</span>   <span class="comment">← AI 斜杠命令定义</span>
+├── <span class="highlight">CLAUDE.md</span>             <span class="comment">← AI 全局规则配置</span>
+├── <span class="highlight">excel/</span>                <span class="comment">← 源数据 Excel（1264 个文件）</span>
+└── <span class="highlight">references/</span>           <span class="comment">← 项目主体</span>
+    ├── agents/           <span class="comment">← Agent 角色系统</span>
+    ├── design/           <span class="comment">← 设计参考文档</span>
+    ├── domains/          <span class="comment">← 功能域知识</span>
+    ├── mapping/          <span class="comment">← 表间映射规则</span>
+    ├── output/           <span class="comment">← 运行时产出</span>
+    ├── scripts/          <span class="comment">← 全部 Python 脚本</span>
+    ├── staging/          <span class="comment">← 暂存输出案例</span>
+    ├── index.md          <span class="comment">← 项目总索引</span>
+    └── naming_convention.md <span class="comment">← 命名规范</span>
+    </div>
+  </div>
+
+  <!-- .agents/workflows -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-cyan">⚡</div>
+      <h2>AI 斜杠命令</h2>
+      <span class="path">.agents/workflows/</span>
+    </div>
+    <div class="card-full">
+      <div class="card-body">
+        <table>
+          <tr><th>文件</th><th>命令</th><th>说明</th></tr>
+          <tr><td>design.md</td><td style="color:var(--accent-green)">/design</td><td>启动策划工作流，激活分层状态机</td></tr>
+          <tr><td>query-db.md</td><td style="color:var(--accent-green)">/query-db</td><td>查询 SQLite 索引数据库的标准方法</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agents Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-purple">🧠</div>
+      <h2>Agent 角色系统</h2>
+      <span class="path">references/agents/</span>
+    </div>
+    <p style="color:var(--text-dim);margin-bottom:16px;font-size:0.88rem">每个 Agent 统一三层目录：<code style="color:var(--accent-cyan)">knowledge/</code>（知识库）、<code style="color:var(--accent-cyan)">process/</code>（工作流 + Hooks）、<code style="color:var(--accent-cyan)">data/</code>（运行时数据）</p>
+
+    <div class="card-grid">
+      <!-- Coordinator -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-blue"></div>
+          <h3>主策划</h3>
+          <span class="tag tag-blue">L0 · coordinator_memory</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">coordinator_rules.md</span><span class="fdesc">工作规则</span></li>
+            <li><span class="fname">coordinator_examples.md</span><span class="fdesc">参考案例</span></li>
+            <li><span class="fname">coordinator_workflow.py</span><span class="fdesc">工作流定义</span></li>
+            <li><span class="fname">coordinator_hooks.py</span><span class="fdesc">Hook 函数</span></li>
+            <li><span class="fname">architecture_design.md</span><span class="fdesc">整体架构设计</span></li>
+            <li><span class="fname">todo_architecture.md</span><span class="fdesc">项目 TODO（唯一维护点）</span></li>
+            <li><span class="fname">done.md</span><span class="fdesc">已完成事项归档</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Combat -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-purple"></div>
+          <h3>战斗策划</h3>
+          <span class="tag tag-purple">L1 · combat_memory</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">combat_rules.md</span><span class="fdesc">战斗策划规则</span></li>
+            <li><span class="dir">understand/</span><span class="fdesc">理解层（游戏机制分析）</span></li>
+            <li><span class="dir">translate/</span><span class="fdesc">翻译层（自然语言→配置字段）</span></li>
+            <li><span class="fname">combat_workflow.py</span><span class="fdesc">工作流定义</span></li>
+            <li><span class="fname">combat_hooks.py</span><span class="fdesc">Hook 函数</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Numerical -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-green"></div>
+          <h3>数值策划</h3>
+          <span class="tag tag-green">L1 · numerical_memory</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">numerical_rules.md</span><span class="fdesc">数值策划规则</span></li>
+            <li><span class="fname">numerical_examples.md</span><span class="fdesc">数值填写案例</span></li>
+            <li><span class="fname">requirement_structures.md</span><span class="fdesc">需求结构定义</span></li>
+            <li><span class="fname">systems_index.md</span><span class="fdesc">游戏系统索引</span></li>
+            <li><span class="fname">system_*.md</span><span class="fdesc">各子系统知识（8个）</span></li>
+            <li><span class="fname">table_directory.md</span><span class="fdesc">全量表结构参考（83KB）</span></li>
+            <li><span class="dir">locate/</span><span class="fdesc">定位步骤知识</span></li>
+            <li><span class="dir">fill/</span><span class="fdesc">填写步骤知识</span></li>
+            <li><span class="fname">numerical_workflow.py</span><span class="fdesc">工作流定义</span></li>
+            <li><span class="fname">numerical_hooks.py</span><span class="fdesc">Hook 函数</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Executor -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-orange"></div>
+          <h3>执行策划</h3>
+          <span class="tag tag-orange">L2 · executor_memory</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">executor_rules.md</span><span class="fdesc">执行策划规则</span></li>
+            <li><span class="fname">executor_design_patterns.md</span><span class="fdesc">设计模式</span></li>
+            <li><span class="fname">executor_sheet_index.md</span><span class="fdesc">Sheet 页索引</span></li>
+            <li><span class="dir">fill/</span><span class="fdesc">填写步骤知识</span></li>
+            <li><span class="dir">write/</span><span class="fdesc">写入步骤知识</span></li>
+            <li><span class="fname">executor_workflow.py</span><span class="fdesc">工作流定义</span></li>
+            <li><span class="fname">executor_hooks.py</span><span class="fdesc">Hook 函数</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- QA -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-pink"></div>
+          <h3>QA 质量检查</h3>
+          <span class="tag tag-pink">L3 · qa_memory</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">qa_rules.md</span><span class="fdesc">QA 规则</span></li>
+            <li><span class="fname">qa_design_patterns.md</span><span class="fdesc">QA 设计模式</span></li>
+            <li><span class="dir">qa/</span><span class="fdesc">QA 子知识</span></li>
+            <li><span class="fname">qa_workflow.py</span><span class="fdesc">工作流定义</span></li>
+            <li><span class="fname">qa_hooks.py</span><span class="fdesc">Hook 函数</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-cyan"></div>
+          <h3>历史归档</h3>
+          <span class="tag tag-cyan">archive</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">postmortem_shadow_clone.md</span><span class="fdesc">如影随形复盘</span></li>
+            <li><span class="fname">postmortem_flaw.md</span><span class="fdesc">缺陷复盘</span></li>
+            <li><span class="fname">postmortem_ur_redhair.md</span><span class="fdesc">UR红发案例复盘</span></li>
+            <li><span class="fname">report_ur_redhair.html</span><span class="fdesc">UR红发可视化报告</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-green">⚙️</div>
+      <h2>Python 脚本</h2>
+      <span class="path">references/scripts/</span>
+    </div>
+
+    <!-- Core -->
+    <div class="card-full" style="margin-bottom:12px">
+      <div class="card-head">
+        <div class="dot dot-blue"></div>
+        <h3>core/ — 核心引擎</h3>
+        <span class="tag tag-blue">9 files</span>
+      </div>
+      <div class="card-body">
+        <table>
+          <tr><th>文件</th><th>说明</th></tr>
+          <tr><td>constants.py</td><td>全局常量、路径定义、Agent 路径解析器</td></tr>
+          <tr><td>machine.py</td><td>分层状态机 (HFSM) 引擎</td></tr>
+          <tr><td>hfsm_bootstrap.py</td><td>状态机初始化启动脚本</td></tr>
+          <tr><td>hfsm_registry.py</td><td>状态机注册表（所有 Agent 工作流注册）</td></tr>
+          <tr><td>workflow.py</td><td>工作流执行器（step 驱动、hook 调度）</td></tr>
+          <tr><td>machine_hooks.py</td><td>状态机全局 Hook</td></tr>
+          <tr><td>table_reader.py</td><td>Excel / SQLite 表读取核心（get_columns、query_db）</td></tr>
+          <tr><td>hook_utils.py</td><td>Agent Hook 公共工具函数</td></tr>
+          <tr><td>file_ops.py</td><td>文件操作工具</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <!-- CLI -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-green"></div>
+          <h3>cli/ — 命令行工具</h3>
+          <span class="tag tag-green">3 files</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">query.py</span><span class="fdesc">SQL 查询入口</span></li>
+            <li><span class="fname">check_factor.py</span><span class="fdesc">查询 Buff 因子</span></li>
+            <li><span class="fname">search_table.py</span><span class="fdesc">搜索表名/列名</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Combat -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-purple"></div>
+          <h3>combat/ — 战斗验证</h3>
+          <span class="tag tag-purple">2 files</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">combat_validator.py</span><span class="fdesc">战斗配置校验器</span></li>
+            <li><span class="fname">whitelist.py</span><span class="fdesc">白名单定义</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Configs -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-orange"></div>
+          <h3>configs/ — 配置文件</h3>
+          <span class="tag tag-orange">3 items</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">table_registry.json</span><span class="fdesc">表注册表（全部表元信息）</span></li>
+            <li><span class="fname">l3_transitions.json</span><span class="fdesc">L3 状态转换配置</span></li>
+            <li><span class="dir">rules/factor_whitelist.json</span><span class="fdesc">因子白名单</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tools -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-cyan"></div>
+          <h3>tools/ — 工具脚本</h3>
+          <span class="tag tag-cyan">3 files</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">gen_table_dir.py</span><span class="fdesc">生成表目录文档</span></li>
+            <li><span class="fname">qa_runner.py</span><span class="fdesc">QA 自动运行器</span></li>
+            <li><span class="fname">rebuild_registry.py</span><span class="fdesc">重建 table_registry.json</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Workflow -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-pink"></div>
+          <h3>workflow/ — 工作流辅助</h3>
+          <span class="tag tag-pink">2 files</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">change_tracker.py</span><span class="fdesc">变更追踪器</span></li>
+            <li><span class="fname">handoff.py</span><span class="fdesc">Agent 间交接（L1→L2）</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Vendor -->
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-blue"></div>
+          <h3>vendor/ — 第三方工具</h3>
+          <span class="tag tag-blue">1 file</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="fname">sqlite3.exe</span><span class="fdesc">SQLite CLI（备用查询）</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tests -->
+    <div class="card-full" style="margin-top:16px">
+      <div class="card-head">
+        <div class="dot dot-pink"></div>
+        <h3>tests/ — 测试脚本</h3>
+        <span class="tag tag-pink">43 files</span>
+      </div>
+      <div class="card-body">
+        <table>
+          <tr><th>分类</th><th>代表文件</th><th>说明</th></tr>
+          <tr><td style="color:var(--accent-green)">端到端流程</td><td>test_full_pipeline.py, test_mvp_chain.py</td><td>完整流水线测试</td></tr>
+          <tr><td style="color:var(--accent-green)">状态机</td><td>test_hfsm.py, test_machine.py, test_transitions.py</td><td>HFSM 引擎测试</td></tr>
+          <tr><td style="color:var(--accent-green)">工作流</td><td>test_workflow.py, test_routing.py</td><td>工作流执行 / 路由测试</td></tr>
+          <tr><td style="color:var(--accent-green)">Agent 模拟</td><td>test_coordinator_sim.py, test_executor_sim.py</td><td>各 Agent 模拟测试</td></tr>
+          <tr><td style="color:var(--accent-green)">Hook</td><td>test_executor_hooks.py, test_new_hooks.py</td><td>Hook 函数测试</td></tr>
+          <tr><td style="color:var(--accent-green)">数据完整性</td><td>test_align.py, test_row6_compliance.py</td><td>数据对齐 / Row6 / 英文输出</td></tr>
+          <tr><td style="color:var(--accent-green)">查询脚本</td><td>query_*.py（6个）</td><td>特定表数据查询（调试用）</td></tr>
+          <tr><td style="color:var(--accent-green)">工具</td><td>check_*.py, scan_row6.py</td><td>检查 / 扫描工具</td></tr>
+          <tr><td style="color:var(--accent-green)">清理</td><td>clean_output.py, cleanup_test_data.py</td><td>测试数据清理</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Design Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-orange">📖</div>
+      <h2>设计参考文档</h2>
+      <span class="path">references/design/</span>
+    </div>
+    <div class="card-full">
+      <div class="card-body">
+        <table>
+          <tr><th>文件</th><th>说明</th></tr>
+          <tr><td>design_index.md</td><td>设计文档总索引</td></tr>
+          <tr><td>factor_lookup.md</td><td>Buff 因子查找表</td></tr>
+          <tr><td>target_lookup.md</td><td>Buff 目标查找表</td></tr>
+          <tr><td>timing_lookup.md</td><td>时机查找表</td></tr>
+          <tr><td>standalone_client_plan.md</td><td>独立客户端计划</td></tr>
+          <tr><td style="color:var(--accent-orange)">data/数值总表.xlsx</td><td>主数值总表（15MB）</td></tr>
+          <tr><td style="color:var(--accent-orange)">data/怀旧服数值总表.xlsx</td><td>怀旧服数值参考（6MB）</td></tr>
+          <tr><td style="color:var(--accent-orange)">data/战斗表.xlsx</td><td>战斗配置参考</td></tr>
+          <tr><td style="color:var(--accent-orange)">data/时机.xlsx</td><td>时机定义参考</td></tr>
+          <tr><td>templates/</td><td>模板文档</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domains Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-purple">🎮</div>
+      <h2>功能域知识</h2>
+      <span class="path">references/domains/</span>
+    </div>
+    <div class="card-full">
+      <div class="card-body">
+        <table>
+          <tr><th>文件</th><th>说明</th></tr>
+          <tr><td>skill.md</td><td>技能系统知识（最大，24KB）</td></tr>
+          <tr><td>buff.md</td><td>Buff 系统知识</td></tr>
+          <tr><td>boss.md</td><td>Boss 系统知识</td></tr>
+          <tr><td>hero.md</td><td>角色系统知识</td></tr>
+          <tr><td>general.md</td><td>通用知识</td></tr>
+          <tr><td>scene.md</td><td>场景系统</td></tr>
+          <tr><td>ship.md</td><td>舰船系统</td></tr>
+          <tr><td>soul.md</td><td>灵魂系统</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapping Section -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-cyan">🔗</div>
+      <h2>表间映射</h2>
+      <span class="path">references/mapping/</span>
+    </div>
+    <div class="card-full">
+      <div class="card-body">
+        <table>
+          <tr><th>文件</th><th>说明</th></tr>
+          <tr><td>README.md</td><td>映射模块说明</td></tr>
+          <tr><td>table_relations.md</td><td>表间关系定义</td></tr>
+          <tr><td>user_relations.md</td><td>用户自定义关系</td></tr>
+          <tr><td>item_templates.md</td><td>道具模板</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Staging & Output -->
+  <div class="section">
+    <div class="section-header">
+      <div class="icon icon-green">📦</div>
+      <h2>输出 & 暂存</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-green"></div>
+          <h3>output/</h3>
+          <span class="tag tag-green">运行时</span>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text-dim);font-size:0.88rem">空目录，运行时自动生成输出文件（如 task_state.json、table_index.db 等）</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="dot dot-orange"></div>
+          <h3>staging/</h3>
+          <span class="tag tag-orange">案例</span>
+        </div>
+        <div class="card-body">
+          <ul class="file-list">
+            <li><span class="dir">soul_skill/</span><span class="fdesc">灵魂技能案例输出</span></li>
+            <li><span class="dir">_mvp_test/</span><span class="fdesc">MVP 测试案例输出</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    填表助手 · 项目路径说明书 · 最后更新 2026-03-23
+  </div>
+
+</div>
+</body>
+</html>

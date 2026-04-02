@@ -1,0 +1,304 @@
+{
+  "atk": {
+    "desc": "攻击力",
+    "type": 1,
+    "pct": 1,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "def": {
+    "desc": "防御力",
+    "type": 1,
+    "pct": 1,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal",
+    "p1_example": 0.01,
+    "p2_fmt": null
+  },
+  "hp": {
+    "desc": "生命值",
+    "type": 1,
+    "pct": 1,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "hit": {
+    "desc": "命中率",
+    "type": 1,
+    "pct": 0,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "cri": {
+    "desc": "暴击率",
+    "type": 1,
+    "pct": 0,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "speed": {
+    "desc": "速度",
+    "type": 1,
+    "pct": 1,
+    "ref": "120174",
+    "p1_fmt": "decimal",
+    "p1_example": 0.15,
+    "p2_fmt": null
+  },
+  "dodge": {
+    "desc": "闪避",
+    "type": 1,
+    "pct": 0,
+    "ref": "用户纠正-S10",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "real": {
+    "desc": "穿透/真实伤害",
+    "type": 1,
+    "pct": 0,
+    "ref": "用户纠正-S10",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "damageadd": {
+    "desc": "伤害加成",
+    "type": 1,
+    "pct": 0,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal",
+    "p1_example": 0.2,
+    "p2_fmt": null
+  },
+  "damagereduce": {
+    "desc": "伤害减免",
+    "type": 1,
+    "pct": 0,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal_negative",
+    "p1_example": -0.1,
+    "p2_fmt": null
+  },
+  "cridamage": {
+    "desc": "暴击伤害/爆伤",
+    "type": 1,
+    "pct": 1,
+    "ref": "11017",
+    "p1_fmt": "decimal",
+    "p1_example": -0.5,
+    "p2_fmt": null
+  },
+  "anticri": {
+    "desc": "抗暴率",
+    "type": 1,
+    "pct": 0,
+    "ref": "10015",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "elementAll": {
+    "desc": "属性伤害",
+    "type": 1,
+    "pct": 0,
+    "ref": "如影随形",
+    "p1_fmt": "decimal",
+    "p1_example": 0.2,
+    "p2_fmt": null
+  },
+  "toughnessDamage1": {
+    "desc": "破韧效率",
+    "type": 1,
+    "pct": 0,
+    "ref": "用户纠正-S4c",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "toughnessDamageReduce1": {
+    "desc": "坚韧伤害减免",
+    "type": 1,
+    "pct": 0,
+    "ref": "用户纠正-S10",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "AddToughnessCri": {
+    "desc": "坚韧暴击",
+    "type": 7,
+    "pct": 0,
+    "ref": "63058",
+    "p1_fmt": "fixed",
+    "p1_example": 1,
+    "p2_fmt": "fixed",
+    "p2_example": 5
+  },
+  "AddToughnessProp": {
+    "desc": "坚韧攻击",
+    "type": 7,
+    "pct": 0,
+    "ref": "120173",
+    "p1_fmt": "int",
+    "p1_example": 0,
+    "p2_fmt": "int",
+    "p2_example": 1,
+    "special_fmt": "属性ID,0"
+  },
+  "AddToughnessDef": {
+    "desc": "坚韧防御",
+    "type": 7,
+    "pct": 0,
+    "ref": "",
+    "p1_fmt": "int",
+    "p1_example": 0,
+    "p2_fmt": null
+  },
+  "AddToughnessMax": {
+    "desc": "坚韧值上限",
+    "type": 7,
+    "pct": 0,
+    "ref": "",
+    "p1_fmt": "int",
+    "p1_example": 0,
+    "p2_fmt": null
+  },
+  "AddToughnessPreShield": {
+    "desc": "坚韧护盾",
+    "type": 7,
+    "pct": 0,
+    "ref": "",
+    "p1_fmt": "int",
+    "p1_example": 0,
+    "p2_fmt": null
+  },
+  "AddToughness": {
+    "desc": "坚韧值",
+    "type": 7,
+    "pct": 0,
+    "ref": "",
+    "p1_fmt": "int",
+    "p1_example": 0,
+    "p2_fmt": null
+  },
+  "RecoverLostHp": {
+    "desc": "免死/复活",
+    "type": 7,
+    "pct": 0,
+    "ref": "用户纠正-S10",
+    "p1_fmt": "decimal",
+    "p1_example": 0.21,
+    "p2_fmt": null
+  },
+  "countBuffIdAddBuff": {
+    "desc": "按层数触发添加buff",
+    "type": 7,
+    "pct": 0,
+    "ref": "12340",
+    "p1_fmt": null,
+    "p2_fmt": null,
+    "special_fmt": "sourceId,threshold&&resultId,grade"
+  },
+  "CountCampBuffIdAddBuff": {
+    "desc": "按阵营buff层数触发",
+    "type": 7,
+    "pct": 0,
+    "ref": "12247",
+    "p1_fmt": null,
+    "p2_fmt": null,
+    "special_fmt": "sourceId,threshold&&resultId,grade"
+  },
+  "DelPercentHp": {
+    "desc": "百分比最大HP削减",
+    "type": 7,
+    "pct": 0,
+    "ref": "12902",
+    "p1_fmt": "decimal",
+    "p1_example": 0.06,
+    "p2_fmt": "fixed",
+    "p2_example": 2
+  },
+  "ClearSomeBuffId": {
+    "desc": "清除指定buff",
+    "type": 6,
+    "pct": 0,
+    "ref": "",
+    "p1_fmt": null,
+    "p2_fmt": null,
+    "special_fmt": "targetBuffId"
+  },
+  "ClearSomeNumBuffId": {
+    "desc": "清除指定数量buff",
+    "type": 6,
+    "pct": 0,
+    "ref": "如影随形",
+    "p1_fmt": "int_count",
+    "p1_example": 1,
+    "p2_fmt": null,
+    "special_fmt": "targetBuffId"
+  },
+  "ImmuneDebuff": {
+    "desc": "免疫减益",
+    "type": 5,
+    "pct": 0,
+    "ref": "",
+    "p1_fmt": "int",
+    "p1_example": 0,
+    "p2_fmt": null
+  },
+  "0": {
+    "desc": "纯标记/无效果",
+    "type": 1,
+    "pct": 0,
+    "ref": "破绽3100021",
+    "p1_fmt": "zero",
+    "p1_example": 0,
+    "p2_fmt": null
+  },
+  "block": {
+    "desc": "格挡",
+    "type": 1,
+    "pct": 0,
+    "ref": "10021",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "maxHp": {
+    "desc": "最大生命值",
+    "type": 1,
+    "pct": 1,
+    "ref": "Factor速查",
+    "p1_fmt": "decimal",
+    "p1_example": 0.1,
+    "p2_fmt": null
+  },
+  "CannotRecoverHp": {
+    "desc": "禁疗/无法恢复生命",
+    "type": 5,
+    "pct": 0,
+    "ref": "Factor速查",
+    "p1_fmt": "zero",
+    "p1_example": 0,
+    "p2_fmt": null
+  },
+  "ElementCanCri": {
+    "desc": "属伤可暴击",
+    "type": 7,
+    "pct": 0,
+    "ref": "query_db-大妈灵魂",
+    "p1_fmt": "int",
+    "p1_example": 1,
+    "p2_fmt": null
+  }
+}

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>README Preview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --dim: #8b949e;
+            --code-bg: #1c2128;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 48px;
+            line-height: 1.7;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: var(--dim);
+            font-size: 0.95rem;
+        }
+
+        p strong {
+            color: var(--text);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 28px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin: 12px 0;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 14px;
+            background: var(--card);
+            color: var(--dim);
+            font-weight: 500;
+            border: 1px solid var(--border);
+        }
+
+        td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            color: var(--dim);
+            vertical-align: top;
+        }
+
+        pre {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px 20px;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.84rem;
+            line-height: 1.6;
+            color: var(--dim);
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+
+        code {
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 0.85em;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 36px;
+            color: var(--dim);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>GameTable Copilot</h1>
+    <p>用自然语言描述需求，AI 自动生成可导入的 Excel 配置表。</p>
+    <p>基于分层状态机 (HFSM) 驱动的多 Agent 系统，用于游戏配表自动化。</p>
+
+    <hr>
+
+    <h2>解决什么问题</h2>
+    <p>游戏策划需要手动维护大量 Excel 配表（技能、Buff、掉落、商店...），这个过程：</p>
+    <table>
+        <tr>
+            <th>痛点</th>
+            <th>具体表现</th>
+        </tr>
+        <tr>
+            <td>效率低</td>
+            <td>一个被动技能可能涉及 5-8 张表、几十个字段，手动查找填写耗时数小时</td>
+        </tr>
+        <tr>
+            <td>易出错</td>
+            <td>字段名中英混杂，ID 关联复杂，漏填一个引用就全盘报错</td>
+        </tr>
+        <tr>
+            <td>知识壁垒高</td>
+            <td>新人要理解上千张表的关系和填写规则，上手周期长</td>
+        </tr>
+        <tr>
+            <td>难以验证</td>
+            <td>填完不知道对不对，要等客户端跑起来才能发现问题</td>
+        </tr>
+    </table>
+    <p>本项目让策划用自然语言描述需求，AI 自动完成 理解→拆解→定位表→查数据→填值→写入→校验 的全流程。</p>
+
+    <hr>
+
+    <h2>核心设计思路</h2>
+    <p>配表的输出直接进客户端，一个错误的 ID 就是一个线上问题。所以整个系统的前提是：<strong>LLM 会出错，工程侧必须兜底。</strong></p>
+    <p>基于这个前提，系统在四个环节做了对应的选型：</p>
+    <table>
+        <tr>
+            <th>环节</th>
+            <th>常规做法</th>
+            <th>我们的做法</th>
+            <th>原因</th>
+        </tr>
+        <tr>
+            <td>流程编排</td>
+            <td>Pipeline / Agent-Chain</td>
+            <td>分层状态机 (HFSM)</td>
+            <td>Pipeline 中上游的幻觉会传导到下游，逐步放大。状态机在每一步设置校验关卡，错误不会扩散到下一步</td>
+        </tr>
+        <tr>
+            <td>步骤执行</td>
+            <td>LLM 自主决定下一步做什么</td>
+            <td>Hook 函数约束每步能做什么</td>
+            <td><code>on_enter_*</code> 限定输入范围，<code>on_exit_*</code> 校验输出。LLM 在 Hook 划定的边界内工作，不能越权</td>
+        </tr>
+        <tr>
+            <td>Agent 间通信</td>
+            <td>LLM 总结上一步结果后传给下一步</td>
+            <td>结构化 JSON 直接交接</td>
+            <td>LLM 转述会丢信息、改数值、编造字段。JSON 是确定性的，下游拿到的就是上游写入的</td>
+        </tr>
+        <tr>
+            <td>知识管理</td>
+            <td>依赖 LLM 对话记忆</td>
+            <td>每次从 Markdown 文件按需加载</td>
+            <td>对话上下文有窗口限制，长了会丢。文件是持久的，可版本管理，策划能直接编辑来修正 AI 行为</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <h2>系统架构</h2>
+    <pre>
+用户需求（自然语言）
+       │
+       ▼
+  L0 主策划 ──────── 理解需求、拆分模块、分配任务
+       │
+  ┌────┴────┐
+  ▼         ▼
+L1 战斗   L1 数值 ── 领域推理、定位目标表、生成填写方案
+  └────┬────┘
+       ▼
+  L2 执行策划 ────── 读 Excel、分配 ID、填写数据、写入文件
+       │
+       ▼
+  L3 QA ──────────── 数据完整性检查、输出验证报告
+       │
+       ▼
+  📦 可用的 Excel
+</pre>
+
+    <hr>
+
+    <h2>技术选型</h2>
+    <table>
+        <tr>
+            <th>组件</th>
+            <th>选型</th>
+            <th>选择原因</th>
+        </tr>
+        <tr>
+            <td>流程编排</td>
+            <td>自研 HFSM</td>
+            <td>比 Pipeline 更安全，状态可持久化和回滚</td>
+        </tr>
+        <tr>
+            <td>Agent 通信</td>
+            <td>JSON Handoff</td>
+            <td>结构化传递，避免 LLM 转述失真</td>
+        </tr>
+        <tr>
+            <td>步骤实现</td>
+            <td>Hook 函数</td>
+            <td>约束 LLM 能力边界，可插拔扩展</td>
+        </tr>
+        <tr>
+            <td>知识管理</td>
+            <td>Markdown 文件</td>
+            <td>策划可直接编辑，不依赖 LLM 记忆</td>
+        </tr>
+        <tr>
+            <td>数据索引</td>
+            <td>SQLite</td>
+            <td>1000+ 张表毫秒级跨表查询</td>
+        </tr>
+        <tr>
+            <td>Excel 读写</td>
+            <td>openpyxl</td>
+            <td>直接操作源文件</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <h2>项目结构</h2>
+    <pre>
+op_design/
+├── .agents/workflows/           # AI 工作流定义（/design, /query-db）
+├── excel/                       # 源数据 Excel（1000+ 张）
+└── references/
+    ├── agents/                  # Agent 角色系统
+    │   ├── coordinator_memory/  #   L0 主策划
+    │   ├── combat_memory/       #   L1 战斗策划
+    │   ├── numerical_memory/    #   L1 数值策划
+    │   ├── executor_memory/     #   L2 执行策划
+    │   └── qa_memory/           #   L3 QA
+    ├── scripts/                 # Python 脚本
+    │   ├── core/                #   HFSM 引擎 + 表读写
+    │   ├── workflow/            #   变更追踪 + Agent 交接
+    │   └── tests/               #   测试脚本
+    ├── design/                  # 设计参考文档
+    ├── domains/                 # 游戏系统知识
+    └── mapping/                 # 表间关系映射
+</pre>
+
+    <hr>
+    <p class="footer">让 AI 填表，你只管做好玩的游戏。</p>
+
+</body>
+
+</html>

@@ -1,0 +1,206 @@
+{
+  "_schema": "qa_rollback",
+  "timestamp": "2026-03-23T17:40:33.499501",
+  "from": "qa_agent",
+  "to": "executor",
+  "error_log": "QA 校验失败（2 项），阻止 merge:\n_DropGroup 新 ID 220011（字段 groupId）与源表已有 ID 冲突！\n_DropGroup 新 ID 220012（字段 groupId）与源表已有 ID 冲突！",
+  "original_output": {
+    "_schema": "executor_output",
+    "task_name": "觉醒礼包（含沙鳄鱼_艾斯_艾尼路觉醒徽章）_2",
+    "output_dir": "G:\\op_design\\references\\output\\觉醒礼包（含沙鳄鱼_艾斯_艾尼路觉醒徽章）_2",
+    "results": {
+      "Item": 1,
+      "_DropGroup": 3,
+      "_ShopItem": 1
+    },
+    "allocated_ids": {
+      "Item": {
+        "pk_field": "itemId",
+        "old_id": "619021",
+        "new_id": 16010012
+      },
+      "_DropGroup": {
+        "pk_field": "groupId",
+        "old_id": "220010",
+        "new_id": 300111
+      },
+      "_ShopItem": {
+        "pk_field": "goodIndex",
+        "old_id": "78",
+        "new_id": 214006
+      }
+    },
+    "lineage": {
+      "trace_id": "觉醒礼包（含沙鳄鱼_艾斯_艾尼路觉醒徽章）_2",
+      "timestamp": "2026-03-23T17:40:31.691720",
+      "requirement": "觉醒礼包（含沙鳄鱼/艾斯/艾尼路觉醒徽章）",
+      "reference": "觉醒徽章礼盒（沙·鳄鱼）619021, 掉落组220010/220011/220012, 商城参考78",
+      "allocated_ids": {
+        "Item": {
+          "pk_field": "itemId",
+          "old_id": "619021",
+          "new_id": 16010012
+        },
+        "_DropGroup": {
+          "pk_field": "groupId",
+          "old_id": "220010",
+          "new_id": 300111
+        },
+        "_ShopItem": {
+          "pk_field": "goodIndex",
+          "old_id": "78",
+          "new_id": 214006
+        }
+      },
+      "id_replacements": {
+        "619021": "16010012",
+        "220010": "300111",
+        "78": "214006"
+      },
+      "cross_references": [
+        {
+          "source_table": "Item",
+          "source_field": "params",
+          "target_table": "_DropGroup",
+          "target_field": "groupId",
+          "value": "300111"
+        }
+      ],
+      "tables": {
+        "Item": {
+          "rows_written": 1,
+          "data": [
+            {
+              "itemId": "16010012",
+              "itemType": "1001",
+              "itemSubType": "6",
+              "bagType": "1001",
+              "名字": "觉醒徽章礼盒（沙·鳄鱼）",
+              "nameIndex": "觉醒徽章礼盒（沙·鳄鱼）",
+              "introIndex": "开启后可获得沙·鳄鱼觉醒徽章。",
+              "图标": "item_250136",
+              "useLevel": "1",
+              "quality": "5",
+              "category": "2",
+              "foldCount": "999",
+              "cd": "0",
+              "function": "1017",
+              "params": "300111",
+              "resource": null,
+              "获取途径跳转": null,
+              "resourceDes": null,
+              "canSell": "1",
+              "currencyType": "5",
+              "sellPrice": "100",
+              "bindType": "1",
+              "cantoWarehourse": "1",
+              "pickupByMail": "1",
+              "isPrecious": "0",
+              "canDeal": "0",
+              "buyBackType": "5",
+              "buyBackPrice": "100",
+              "sort": "110",
+              "药品自动使用": "0",
+              "可使用物品的展示类型": "4",
+              "使用结果展示": "2",
+              "commonCdType": null,
+              "commonCd": "1",
+              "expiredTime": null,
+              "combineId": null,
+              "limitNum": null,
+              "是否显示绑定按钮": "1",
+              "左上显示等级(宝石在宝石表里)，目前仅训练道具使用。": null,
+              "获取途径规则修改": null,
+              "物品属性类型显示索引()": null,
+              "needDelete": null,
+              "名字-AP2": null,
+              "canDeployExpireTime": null,
+              "dictServerType": "1"
+            }
+          ]
+        },
+        "_DropGroup": {
+          "rows_written": 3,
+          "data": [
+            {
+              "groupId": "300111",
+              "dropType": "1",
+              "times": "1",
+              "bind": "1",
+              "maxNum": "1",
+              "param": "1001,615009,1,100",
+              "描述": "沙·鳄鱼碎片大礼包",
+              "EmptyKey-H2": null,
+              "EmptyKey-I2": null,
+              "Unnamed: 9": null
+            },
+            {
+              "groupId": "220011",
+              "dropType": "1",
+              "times": "1",
+              "bind": "1",
+              "maxNum": "1",
+              "param": "1001,615010,1,100",
+              "描述": "新世界鲁兹碎片大礼包",
+              "EmptyKey-H2": null,
+              "EmptyKey-I2": null,
+              "Unnamed: 9": null
+            },
+            {
+              "groupId": "220012",
+              "dropType": "1",
+              "times": "1",
+              "bind": "1",
+              "maxNum": "1",
+              "param": "1001,615011,1,100",
+              "描述": "夏洛特玲玲碎片大礼包",
+              "EmptyKey-H2": null,
+              "EmptyKey-I2": null,
+              "Unnamed: 9": null
+            }
+          ]
+        },
+        "_ShopItem": {
+          "rows_written": 1,
+          "data": [
+            {
+              "goodIndex": "214006",
+              "shopType": "0",
+              "orderNum": "-1",
+              "currencyInfo": "1,0,200",
+              "itemInfo": "1001,1000002,1",
+              "openTimeStr": null,
+              "closeTimeStr": null,
+              "discountRate": "10000",
+              "discountStartTime": null,
+              "discountEndTime": null,
+              "page": "1",
+              "modelRes": null,
+              "maxCountPerTrade": "999",
+              "canGiveAway": "0",
+              "limitData": "2,3,0,0,0",
+              "limitParam": null,
+              "banned": "0",
+              "sortId": "3",
+              "showJudge": null,
+              "preJudge": null,
+              "weight": "1",
+              "canConfigCost": "0",
+              "costRefreshCondition": null,
+              "isImportant": "0",
+              "dictServerType": "1",
+              "EmptyKey-Y2": null,
+              "EmptyKey-Z2": null,
+              "EmptyKey-AA2": null
+            }
+          ]
+        }
+      }
+    }
+  },
+  "failed_checks": [
+    "_DropGroup 新 ID 220011（字段 groupId）与源表已有 ID 冲突！",
+    "_DropGroup 新 ID 220012（字段 groupId）与源表已有 ID 冲突！"
+  ],
+  "retry_hint": "请根据以上报错修正数据后重新 write"
+}
