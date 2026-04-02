@@ -15,7 +15,7 @@ import json
 from datetime import datetime
 
 # ── 路径 ──
-BASE = os.path.join(r'G:\op_design', 'references')
+BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))
 
 from constants import agent_paths
@@ -57,6 +57,7 @@ def on_enter_match():
     return {
         "knowledge": [
             _load_md('combat_rules.md'),
+            _load_md('combat_examples.md'),
         ],
         "upstream": upstream,
         "instruction": (
@@ -109,7 +110,7 @@ def on_exit_confirm():
     clauses = split_result.get('clauses', [])
     requirement = split_result.get('requirement', '未知需求')
     clause_texts = ', '.join(c.get('text', '?')[:20] for c in clauses[:3])
-    append_pending(DATA_DIR, "combat_rules.md",
+    append_pending(DATA_DIR, "combat_examples.md",
                    f"\n### 案例: {requirement}\n- 子句: {clause_texts}\n")
 
     return {"status": "OK", "confirmed_clauses": len(clauses)}
@@ -167,6 +168,7 @@ def on_enter_translate():
             _load_md('translate/rules.md'),
             _load_md('translate/condition_map.md'),
             _load_md('combat_rules.md'),
+            _load_md('combat_examples.md'),
         ],
         "categorized": categorized,
         "field_context": field_ctx,
@@ -214,7 +216,7 @@ def on_enter_output():
     content = f"\n- 需求: {requirement}\n- 涉及表: {', '.join(table_names)}\n"
     for t, c in row_counts.items():
         content += f"  - {t}: {c} 行\n"
-    append_pending(DATA_DIR, "combat_rules.md", content)
+    append_pending(DATA_DIR, "combat_examples.md", content)
 
     return {
         "status": "OK",

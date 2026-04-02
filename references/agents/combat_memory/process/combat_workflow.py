@@ -37,11 +37,11 @@ transitions = [
 
 # ── 知识库映射 ──
 knowledge = {
-    "match":      ["combat_rules.md"],
+    "match":      ["combat_rules.md", "combat_examples.md"],
     "split":      ["understand/rules.md", "combat_rules.md"],
     "categorize": ["understand/rules.md"],
     "translate":  ["translate/rules.md", "translate/condition_map.md",
-                   "combat_rules.md"],
+                   "combat_rules.md", "combat_examples.md"],
     "output":     ["combat_rules.md"],
 }
 
