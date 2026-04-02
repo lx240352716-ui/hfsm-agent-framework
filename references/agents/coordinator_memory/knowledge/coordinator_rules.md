@@ -67,4 +67,5 @@
 | 跳过模块确认直接到表级别 | 铁规：功能模块先确认 |
 | 以为 EquipRefine 需要新增 | 按部位共享机制，新套装不需新增 |
 | 以为装备本体要注册 Item 表 | 装备本体由 Equipment 管理，只有装备任选箱需要 Item 注册 |
+| 路径修改只改 .py 没扫 .md/.json | 每次路径修改前必须全量 `grep -rn "旧路径" --include="*.py" --include="*.md" --include="*.json" .` 确认 0 results 再提交 |
 
