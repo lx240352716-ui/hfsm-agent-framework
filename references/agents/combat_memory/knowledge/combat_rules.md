@@ -10,19 +10,10 @@
 1. **不猜因子名**：不确定用 `check_factor.py` 查，或告诉用户用 `/lookup`
 2. **不编造表结构**：字段名必须来自 `get_columns()` 返回的 en 列表
 3. **四要素必须分类**：触发/效果/清除/限制，缺一不可
-4. **cases 走暂存**：所有案例写入一律走 `pending_examples.json`（match 阶段覆盖写清残留），禁止直接写 `combat_examples.md`
-5. **ID 顺序约束**：先执行的 FightBuff 必须用小 ID，后执行的用大 ID
-6. **数据读取**：fight/ 下大表(>1MB)必须用 `query_db()` / `read_table()`，禁止 pandas 硬读
+4. **ID 顺序约束**：先执行的 FightBuff 必须用小 ID，后执行的用大 ID
+5. **数据读取**：fight/ 下大表(>1MB)必须用 `query_db()` / `read_table()`，禁止 pandas 硬读
 
-## 复盘规则
-
-```
-1. 收集本轮所有问题(错误、用户确认项)
-2. 去重: 是否该问题曾出现过?
-   - 首犯 → 写入踩坑记录
-   - 重犯 → 升级为铁规
-3. 发布复盘报告
-```
+> 存储规则和复盘规则见 CLAUDE.md（项目级通用规则）
 
 ## 踩坑记录
 

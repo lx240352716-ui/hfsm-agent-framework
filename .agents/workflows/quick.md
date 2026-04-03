@@ -78,28 +78,13 @@ python scripts/cli/query.py "<SQL语句>"
 
 **完成标准**：修改已输出，CHANGES.md 已生成。
 
-### Step 6: 知识沉淀
+### Step 6: 复盘 & 沉淀
 
-> /quick 走的是 HFSM，hooks 已自动通过 pending 记录案例。
-> 但如果用户在 Step 4 确认时**纠正了方案**（如修改因子名、调整参数），
-> 需要把纠正内容追加到 pending，作为踩坑记录沉淀：
+> 按 CLAUDE.md「复盘规则」执行。
 
-```shell
-python -c "
-import sys, os
-sys.path.insert(0, os.path.join('references', 'scripts', 'core'))
-from hook_utils import append_pending
-from constants import AGENTS_DIR
-# 按实际 agent 替换
-data_dir = os.path.join(AGENTS_DIR, 'AGENT_NAME', 'data')
-append_pending(data_dir, 'TARGET_RULES.md', '''
-## 踩坑 — <问题简述>
-- 错误: <原方案>
-- 正确: <用户纠正后的方案>
-- 教训: <总结>
-''')
-"
-```
+1. /quick 的案例已由 HFSM hooks 自动暂存
+2. 自查：用户在 Step 4 确认时是否纠正了方案？
+   - 有纠正 → 调用 `append_pending()` 写入踩坑记录 → `commit_pending()`
+   - 无纠正 → 跳过
 
-如果本次没有纠正 → 跳过此步。
 

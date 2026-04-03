@@ -12,7 +12,8 @@
 3. **避免"待补充"残留**：交付前全字段检查
 4. **数据读取**：fight/ 下大表(>1MB)必须用 `query_db()` / `read_table()`，禁止 pandas 硬读
 5. **变更追踪**：配表任务必须用 `ChangeTracker` 输出 CHANGES.md
-6. **案例走暂存**：所有案例写入一律走 `pending_examples.json`（match 阶段覆盖写清残留，confirm/output 阶段追加），禁止直接写 `examples.md`
+
+> 存储规则和复盘规则见 CLAUDE.md（项目级通用规则）
 
 ## 踩坑记录
 

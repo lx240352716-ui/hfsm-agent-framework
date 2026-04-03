@@ -36,6 +36,25 @@
 7. **源数据与工程数据分离**：`excel/` 只放源表，`references/` 放所有AI工程产物
 8. **必须用 Workflow**：配表流程通过 `Workflow` 框架执行，定义见 `scripts/configs/workflows/*.json`
 
+## 知识存储规则
+
+1. **案例走暂存**：所有案例一律走 `pending_examples.json`，禁止直写 `*_examples.md`
+2. **暂存生命周期**：match 阶段覆盖写（清残留）→ confirm/output 追加 → review/结束阶段提交
+3. **分类存储**：踩坑/铁规 → 对应 Agent 的 `*_rules.md`；案例 → 对应 Agent 的 `*_examples.md`
+4. **格式跟随目标文件**：写入前先读目标文件，按其现有格式追加
+5. **写入方式**：`append_pending()` → `commit_pending()`（见 `hook_utils.py`）
+
+## 复盘规则
+
+每轮对话结束前（/design review、/consult 确认、/quick 完成），AI 自查：
+
+1. 收集本轮所有问题（错误、用户纠正、用户确认项）
+2. 去重：该问题是否曾出现过？
+   - 首犯 → 写入对应 Agent 的踩坑记录
+   - 重犯 → 升级为对应 Agent 的铁规
+3. 写入方式：`append_pending()` → `commit_pending()`
+4. 发布复盘报告
+
 ## 工作流
 
 ### S_Standard（开荒模式）
