@@ -29,14 +29,46 @@ def step(n, total, msg):
 
 
 def main():
-    total_steps = 5
+    total_steps = 6
     t0 = time.time()
 
     print("=" * 60)
     print("  🚀 项目初始化")
     print("=" * 60)
     print(f"  项目根目录: {BASE_DIR}")
-    print(f"  Excel 目录: {EXCEL_DIR}")
+
+    # ── Step 0: 自动安装依赖 ──
+    step(0, total_steps, "检测并安装 Python 依赖")
+    REQUIRED_PACKAGES = {
+        'openai': 'openai>=1.0',
+        'pandas': 'pandas>=2.0',
+        'openpyxl': 'openpyxl>=3.1',
+        'dotenv': 'python-dotenv>=1.0',
+    }
+    # Windows 专用
+    if sys.platform == 'win32':
+        REQUIRED_PACKAGES['win32com'] = 'pywin32>=306'
+        REQUIRED_PACKAGES['pythoncom'] = 'pywin32>=306'
+
+    missing = []
+    for import_name, pip_name in REQUIRED_PACKAGES.items():
+        try:
+            __import__(import_name)
+        except ImportError:
+            if pip_name not in missing:
+                missing.append(pip_name)
+
+    if missing:
+        print(f"  📦 安装缺失的包: {', '.join(missing)}")
+        import subprocess
+        for pkg in missing:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', pkg],
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        print(f"  ✅ {len(missing)} 个包安装完成")
+    else:
+        print("  ✅ 所有依赖已就绪")
+
+    print(f"  📂 Excel 目录: {EXCEL_DIR}")
 
     # ── Step 1: 检查 Excel 目录 ──
     step(1, total_steps, "检查 Excel 目录")
