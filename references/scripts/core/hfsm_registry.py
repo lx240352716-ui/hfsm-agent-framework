@@ -33,6 +33,76 @@ WORKFLOW_PATHS = {
 }
 
 
+# ── 知识加载 ────────────────────────────────────────
+
+# 公有知识清单（懒加载）
+_manifest_text_cache = None
+
+
+def _get_manifest_text():
+    """获取公有知识清单文本（带模块级缓存）。"""
+    global _manifest_text_cache
+    if _manifest_text_cache is None:
+        try:
+            from knowledge_search import get_manifest_text
+            _manifest_text_cache = get_manifest_text() or ""
+        except ImportError:
+            _manifest_text_cache = ""
+    return _manifest_text_cache
+
+
+def load_state_knowledge(agent_name, state_name, workflow_mod=None):
+    """加载指定 agent 状态的知识上下文。
+
+    读取 workflow.knowledge 里配置的文件列表：
+    - 普通文件名 → 从 agents/{agent}_memory/knowledge/ 读取私有知识
+    - "__manifest__" → 注入公有 gamedocs 文件清单
+
+    Args:
+        agent_name: agent 名称（如 'coordinator', 'combat', 'numerical'）
+        state_name: 状态名（如 'parse', 'match', 'translate'）
+        workflow_mod: 已加载的 workflow 模块（优先使用，避免重复加载）
+
+    Returns:
+        str: 拼接好的知识文本，供注入 LLM prompt
+    """
+    # 使用传入的 workflow 模块，或从磁盘加载
+    if workflow_mod is None:
+        wf_path = WORKFLOW_PATHS.get(agent_name)
+        if not wf_path or not os.path.exists(wf_path):
+            return ""
+        workflow_mod = load_workflow(agent_name, wf_path)
+
+    knowledge_map = getattr(workflow_mod, 'knowledge', {})
+    file_list = knowledge_map.get(state_name, [])
+    if not file_list:
+        return ""
+
+    # 私有知识目录
+    knowledge_dir = os.path.join(AGENTS_DIR, f'{agent_name}_memory', 'knowledge')
+
+    # 逐项加载
+    parts = []
+    for f in file_list:
+        if f == "__manifest__":
+            manifest = _get_manifest_text()
+            if manifest:
+                parts.append(manifest)
+        else:
+            # 私有知识文件（支持子目录如 understand/rules.md）
+            fpath = os.path.join(knowledge_dir, f)
+            if os.path.exists(fpath):
+                try:
+                    with open(fpath, 'r', encoding='utf-8') as fp:
+                        content = fp.read().strip()
+                    if content:
+                        parts.append(f"# {f}\n{content}")
+                except Exception:
+                    pass
+
+    return '\n\n---\n\n'.join(parts)
+
+
 # ── 工具函数 ────────────────────────────────────────
 
 def load_workflow(name, path):

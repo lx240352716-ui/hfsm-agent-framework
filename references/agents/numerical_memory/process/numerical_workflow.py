@@ -34,9 +34,9 @@ transitions = [
 
 # ── 知识库映射 ──
 knowledge = {
-    "match":  ["numerical_rules.md", "systems_index.md", "numerical_examples.md"],
+    "match":  ["numerical_rules.md", "systems_index.md", "numerical_examples.md", "__manifest__"],
     "split":  ["numerical_rules.md", "requirement_structures.md"],    # + 动态加载 system_*.md
-    "locate": ["table_directory.md", "numerical_rules.md", "requirement_structures.md"],
+    "locate": ["table_directory.md", "numerical_rules.md", "requirement_structures.md", "__manifest__"],
     "output": ["numerical_rules.md"],
 }
 

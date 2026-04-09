@@ -38,8 +38,8 @@ transitions = [
 # rules.md 包含拆分规则+铁规+踩坑记录
 # examples.md 包含历史案例（自动积累）
 knowledge = {
-    "parse":         ["coordinator_rules.md"],
-    "split_modules": ["coordinator_rules.md", "coordinator_examples.md"],
+    "parse":         ["coordinator_rules.md", "__manifest__"],
+    "split_modules": ["coordinator_rules.md", "coordinator_examples.md", "__manifest__"],
 }
 
 # ── hooks 映射（扁平格式，与 numerical/executor/combat 一致） ──

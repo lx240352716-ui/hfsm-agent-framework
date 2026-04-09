@@ -66,10 +66,10 @@ class LLMClient:
             try:
                 from openai import OpenAI
             except ImportError:
-                print("❌ 请安装 openai: pip install openai>=1.0")
+                print("[ERR] openai not installed: pip install openai>=1.0")
                 sys.exit(1)
             if not self.api_key:
-                print("❌ 请在 .env 中设置 DASHSCOPE_API_KEY")
+                print("[ERR] DASHSCOPE_API_KEY not set in .env")
                 sys.exit(1)
 
             # GLM (智谱) API 需要 JWT 认证
@@ -102,7 +102,7 @@ class LLMClient:
                                headers={"alg": "HS256", "sign_type": "SIGN"})
             return token
         except ImportError:
-            print("⚠️ GLM 需要 PyJWT: pip install pyjwt")
+            print("[WARN] GLM requires PyJWT: pip install pyjwt")
             return api_key
 
     def chat(self, system_prompt: str, user_message: str,
