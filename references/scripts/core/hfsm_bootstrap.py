@@ -28,6 +28,7 @@ KNOWLEDGE_MAP = {
     "L0": os.path.join(AGENTS_DIR, 'coordinator_memory', 'knowledge'),
     "L1.combat": os.path.join(AGENTS_DIR, 'combat_memory', 'knowledge'),
     "L1.numerical": os.path.join(AGENTS_DIR, 'numerical_memory', 'knowledge'),
+    "L1.system": os.path.join(AGENTS_DIR, 'system_memory', 'knowledge'),
     "L2": os.path.join(AGENTS_DIR, 'executor_memory'),
 }
 
@@ -35,6 +36,7 @@ KNOWLEDGE_MAP = {
 START_MAP = {
     "L1.combat": "design_combat",
     "L1.numerical": "design_numerical",
+    "L1.system": "design_system",
     "L2": "executor",
 }
 
@@ -49,6 +51,8 @@ def _state_to_layer(state_str):
         return "L1.combat"
     elif state_str.startswith('design_numerical'):
         return "L1.numerical"
+    elif state_str.startswith('design_system'):
+        return "L1.system"
     elif state_str.startswith('executor'):
         return "L2"
     return None
@@ -83,6 +87,8 @@ def get_current_agent_info(model):
         return {"layer": layer, "agent": "战斗策划", "step": '_'.join(parts[2:]) if len(parts) > 2 else None}
     elif state.startswith('design_numerical'):
         return {"layer": layer, "agent": "数值策划", "step": '_'.join(parts[2:]) if len(parts) > 2 else None}
+    elif state.startswith('design_system'):
+        return {"layer": layer, "agent": "系统策划", "step": '_'.join(parts[2:]) if len(parts) > 2 else None}
     elif state.startswith('executor'):
         return {"layer": layer, "agent": "执行策划", "step": '_'.join(parts[1:]) if len(parts) > 1 else None}
     elif state.startswith('pipeline'):

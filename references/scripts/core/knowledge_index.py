@@ -85,6 +85,17 @@ def build_index(dirs=None, force=False, **kwargs):
         print(f"[OK] {len(chunks)} chunks")
         stats['indexed'] += 1
 
+    # Wiki 编译层
+    try:
+        from wiki_compiler import compile_wiki
+        cache_dir = os.path.join(_GAMEDOCS_DIR, '.cache')
+        if os.path.isdir(cache_dir):
+            print("\n[+] Compiling wiki...")
+            wiki_stats = compile_wiki(cache_dir, _KNOWLEDGE_DIR, force=force)
+            stats['wiki'] = wiki_stats
+    except Exception as e:
+        print(f"[WARN] Wiki compilation failed: {e}")
+
     return stats
 
 

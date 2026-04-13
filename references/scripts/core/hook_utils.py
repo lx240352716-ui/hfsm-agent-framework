@@ -162,7 +162,7 @@ def prepare_field_context(table_names):
     return {
         'field_maps': field_maps,
         'instruction': (
-            "⚠️ 所有字段名必须使用 field_maps 中 en 列表里的英文名。\n"
+            "[WARN] 所有字段名必须使用 field_maps 中 en 列表里的英文名。\n"
             "禁止自行翻译中文为英文。\n"
             "中英对照参考 cn_en 映射。"
         ),

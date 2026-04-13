@@ -28,6 +28,7 @@ WORKFLOW_PATHS = {
     "coordinator": os.path.join(AGENTS_DIR, 'coordinator_memory', 'process', 'coordinator_workflow.py'),
     "combat":      os.path.join(AGENTS_DIR, 'combat_memory',      'process', 'combat_workflow.py'),
     "numerical":   os.path.join(AGENTS_DIR, 'numerical_memory',   'process', 'numerical_workflow.py'),
+    "system":      os.path.join(AGENTS_DIR, 'system_memory',      'process', 'system_workflow.py'),
     "executor":    os.path.join(AGENTS_DIR, 'executor_memory',    'process', 'executor_workflow.py'),
     "qa":          os.path.join(AGENTS_DIR, 'qa_memory',          'process', 'qa_workflow.py'),
 }
@@ -204,6 +205,7 @@ def build_hfsm():
     coord_wf = load_workflow("coordinator", WORKFLOW_PATHS["coordinator"])
     combat_wf = load_workflow("combat", WORKFLOW_PATHS["combat"])
     numerical_wf = load_workflow("numerical", WORKFLOW_PATHS["numerical"])
+    system_wf = load_workflow("system", WORKFLOW_PATHS["system"])
     executor_wf = load_workflow("executor", WORKFLOW_PATHS["executor"])
     qa_wf = load_workflow("qa", WORKFLOW_PATHS["qa"])
 
@@ -223,6 +225,9 @@ def build_hfsm():
              {'name': 'numerical',
               'children': workflow_to_states(numerical_wf),
               'initial': numerical_wf.initial},
+             {'name': 'system',
+              'children': workflow_to_states(system_wf),
+              'initial': system_wf.initial},
          ],
          'initial': 'router'},
 
@@ -251,6 +256,9 @@ def build_hfsm():
     for t in numerical_wf.transitions:
         transitions.append([t[0], f'design_numerical_{t[1]}', f'design_numerical_{t[2]}'])
 
+    for t in system_wf.transitions:
+        transitions.append([t[0], f'design_system_{t[1]}', f'design_system_{t[2]}'])
+
     for t in executor_wf.transitions:
         transitions.append([t[0], f'executor_{t[1]}', f'executor_{t[2]}'])
 
@@ -267,12 +275,14 @@ def build_hfsm():
         # design 内部路由（数据驱动，支持任意 Agent）
         {'trigger': 'route_to_combat', 'source': 'design_router', 'dest': 'design_combat'},
         {'trigger': 'route_to_numerical', 'source': 'design_router', 'dest': 'design_numerical'},
-        # 未来扩展: {'trigger': 'route_to_system', 'source': 'design_router', 'dest': 'design_system'},
+        {'trigger': 'route_to_system', 'source': 'design_router', 'dest': 'design_system'},
 
-        # 各 Agent 完成 → 回 router → _route_next 接下一个
+        # 各 Agent 完成 -> 回 router -> _route_next 接下一个
         {'trigger': 'agent_done', 'source': 'design_combat_review', 'dest': 'design_router',
          'after': '_route_next'},
         {'trigger': 'agent_done', 'source': 'design_numerical_output', 'dest': 'design_router',
+         'after': '_route_next'},
+        {'trigger': 'agent_done', 'source': 'design_system_export', 'dest': 'design_router',
          'after': '_route_next'},
 
         # design → executor (所有 Agent 完成后由 _route_next 自动触发)
@@ -318,6 +328,7 @@ def build_hfsm():
         'coordinator': coord_wf,
         'combat': combat_wf,
         'numerical': numerical_wf,
+        'system': system_wf,
         'executor': executor_wf,
         'qa': qa_wf,
     }
@@ -328,6 +339,7 @@ def build_hfsm():
     _bind_callbacks(model, 'coordinator', coord_wf)
     _bind_callbacks(model, 'design_combat', combat_wf)
     _bind_callbacks(model, 'design_numerical', numerical_wf)
+    _bind_callbacks(model, 'design_system', system_wf)
     _bind_callbacks(model, 'executor', executor_wf)
     _bind_callbacks(model, 'pipeline', qa_wf)
 

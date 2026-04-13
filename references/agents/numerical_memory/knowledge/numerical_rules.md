@@ -12,6 +12,11 @@
 3. **避免"待补充"残留**：交付前全字段检查
 4. **数据读取**：fight/ 下大表(>1MB)必须用 `query_db()` / `read_table()`，禁止 pandas 硬读
 5. **变更追踪**：配表任务必须用 `ChangeTracker` 输出 CHANGES.md
+6. **奖励锚定**：排名/活动奖励必须按以下流程设计：
+   - 从数值总表"道具价格"读取道具理论价值(钻石单位)
+   - 找同类型活动的奖励数据，计算其总价值作为基准
+   - 按周期比例换算（7天赛季 = 2周活动的50-70%）
+   - 所有奖励数量必须附总价值(钻石)列，禁止凭空编造
 
 > 存储规则和复盘规则见 CLAUDE.md（项目级通用规则）
 
@@ -21,5 +26,5 @@
 |------|------|
 | SQLite 锁库 | 终止的 Python 进程不释放连接，新进程查询会卡死 → 需手动 kill |
 | python -c 卡死 | PowerShell 的 `python -c "..."` 对中文/嵌套引号/`%` 解析异常，导致进程挂起 → 一律写 `.py` 文件执行 |
-| 表名带 `_` 前缀 | `_DropGroup`、`_ShopItem` 等表名以下划线开头，直接搜"DropGroup"搜不到 → 用 search_table 或 hook 的 _search_table() |
+| 表名带 `_` 前缀 | `_DropGroup`、`_ShopItem` 等表名以下划线开头，直接搜"DropGroup"搜不到 → 用 search_table 或 hook 的_search_table() |
 | （后续积累） | |

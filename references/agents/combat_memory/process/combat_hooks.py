@@ -15,8 +15,10 @@ import json
 from datetime import datetime
 
 # ── 路径 ──
-BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))
+sys.path.insert(0, os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
+    'references', 'scripts', 'core'
+))
 
 from constants import agent_paths
 from hook_utils import (

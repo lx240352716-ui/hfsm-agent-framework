@@ -78,7 +78,7 @@ def get_pk_col(table_name):
         for col in en_cols:
             if col.startswith('EmptyKey') or col.startswith('Unnamed'):
                 continue
-            if col == 'id' or (len(col) > 2 and col.endswith('Id') or col.endswith('id')):
+            if col == 'id' or (len(col) > 2 and (col.endswith('Id') or col.endswith('id'))):
                 _pk_cache[table_name] = col
                 return col
     except Exception:

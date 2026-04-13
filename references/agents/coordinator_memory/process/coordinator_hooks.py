@@ -75,9 +75,13 @@ def on_enter_split_modules():
         "instruction": (
             "根据知识库的拆分模板和历史案例，将需求拆分为模块：\n"
             "1. 列出每个模块名称\n"
-            "2. 标注由谁负责（战斗策划 / 数值策划）\n"
+            "2. 标注由谁负责（系统策划 / 战斗策划 / 数值策划）\n"
             "3. 将清单展示给用户确认\n"
-            "注意：不要分配给执行策划，执行策划由上游产出自动驱动。"
+            "注意：\n"
+            "- 新系统/新功能优先派给系统策划\n"
+            "- 系统策划会自行委托数值/战斗部分，不需要重复分配\n"
+            "- 纯数值/纯战斗需求可直接分给对应策划\n"
+            "- 不要分配给执行策划，执行策划由上游产出自动驱动。"
         ),
     }
 
@@ -202,7 +206,7 @@ def on_enter_review():
         f"## 任务回顾 — {requirement}",
         f"",
         f"**时间**: {l3_done.get('timestamp', '?')}",
-        f"**QA**: {'✅ 通过' if qa_status == 'pass' else '❌ 未通过'}",
+        f"**QA**: {'[OK] 通过' if qa_status == 'pass' else '[ERR] 未通过'}",
         f"**状态**: {l3_done.get('status', '?')}",
         f"",
         f"### 变更摘要",
@@ -242,7 +246,7 @@ def on_enter_review():
             missing = [gid for gid in dg_ids if gid not in params]
             if missing and len(dg_ids) > 1:
                 anomalies.append(
-                    f"⚠️ Item.params={params} 未包含所有 _DropGroup ID: 缺 {', '.join(missing)}"
+                    f"[WARN] Item.params={params} 未包含所有 _DropGroup ID: 缺 {', '.join(missing)}"
                 )
 
     # 检查名字是否仍为参考行原名
@@ -255,7 +259,7 @@ def on_enter_review():
 
     if anomalies:
         report_lines.append(f"")
-        report_lines.append(f"### ⚠️ 异常检测")
+        report_lines.append(f"### [WARN] 异常检测")
         for a in anomalies:
             report_lines.append(f"- {a}")
 
@@ -263,7 +267,7 @@ def on_enter_review():
 
     # ── 4. 从各 Agent 的 pending 提交案例 ──
     committed = []
-    for agent_name in ['coordinator_memory', 'numerical_memory']:
+    for agent_name in ['coordinator_memory', 'numerical_memory', 'combat_memory', 'system_memory']:
         ap = agent_paths(agent_name)
         pending_path = os.path.join(ap['data_dir'], 'pending_examples.json')
         if not os.path.exists(pending_path):
@@ -301,6 +305,7 @@ def on_enter_done():
     # 各 agent 需要清理的目录
     cleanup_dirs = [
         agent_paths('numerical_memory')['data_dir'],
+        agent_paths('system_memory')['data_dir'],
         agent_paths('executor_memory')['data_dir'],
         agent_paths('coordinator_memory')['data_dir'],
     ]
@@ -315,7 +320,7 @@ def on_enter_done():
         for f in glob.glob(os.path.join(d, '*.json')):
             try:
                 os.remove(f)
-                deleted.append(os.path.relpath(f, BASE))
+                deleted.append(os.path.relpath(f, AGENTS_DIR))
             except Exception:
                 pass
 
@@ -323,7 +328,7 @@ def on_enter_done():
     for f in glob.glob(os.path.join(qa_dir, '*.json')):
         try:
             os.remove(f)
-            deleted.append(os.path.relpath(f, BASE))
+            deleted.append(os.path.relpath(f, AGENTS_DIR))
         except Exception:
             pass
 

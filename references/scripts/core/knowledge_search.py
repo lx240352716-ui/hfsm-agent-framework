@@ -118,6 +118,8 @@ def get_manifest_text(cache_dir=None):
     清单内容很小（~2KB），可在每个 LLM 状态的 on_enter 注入。
     agent 看到清单后，按需调用 read_cached_file() 读取具体文件。
 
+    如果 wiki 索引存在，追加 entity/concept 交叉引用信息。
+
     Returns:
         str: 格式化的文件清单文本，无缓存时返回空字符串
     """
@@ -130,6 +132,24 @@ def get_manifest_text(cache_dir=None):
         if len(m['titles']) > 10:
             titles += f' ... (+{len(m["titles"])-10})'
         lines.append(f"- {m['filename']} ({m['size']//1024}KB): {titles}")
+
+    # 追加 wiki 索引
+    wiki_index = os.path.join(
+        os.path.dirname(cache_dir or CACHE_DIR), '..', 'wiki', 'index.md'
+    )
+    wiki_index = os.path.normpath(wiki_index)
+    if os.path.exists(wiki_index):
+        try:
+            with open(wiki_index, 'r', encoding='utf-8') as f:
+                wiki_content = f.read()
+            # 截取合理大小，避免 prompt 过大
+            if len(wiki_content) > 3000:
+                wiki_content = wiki_content[:3000] + '\n...(truncated)'
+            lines.append('')
+            lines.append(wiki_content)
+        except Exception:
+            pass
+
     return '\n'.join(lines)
 
 
