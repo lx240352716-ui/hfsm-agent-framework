@@ -26,4 +26,4 @@ __pycache__/
 # ── 系统文件 ──
 Thumbs.db
 .DS_Store
-~$*.xlsx
+~$*.xlsx.env
