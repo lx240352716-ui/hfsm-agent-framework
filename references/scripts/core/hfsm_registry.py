@@ -125,17 +125,8 @@ class DesignWorkflow:
     """策划工作流模型 — pytransitions 的 model 对象"""
 
     def is_dispatch_ready(self):
-        """L0->L1: 派发数据已准备好（检查 output.json 是否由 on_enter_dispatch 生成）"""
-        import os, json
-        output_path = os.path.join(AGENTS_DIR, 'coordinator_memory', 'data', 'output.json')
-        if not os.path.exists(output_path):
-            return False
-        try:
-            with open(output_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            return bool(data.get('dispatch'))
-        except Exception:
-            return False
+        """L0→L1: 派发数据已准备好"""
+        return bool(getattr(self, 'dispatched_tasks', None))
 
     def is_design_done(self):
         """L1→L2: 设计方案已完成"""
@@ -358,29 +349,6 @@ def build_hfsm():
     model.on_enter_design_router = lambda: on_enter_design_router(model)
     model.on_enter_executor = lambda: on_enter_executor(model)
     model.on_enter_pipeline = lambda: on_enter_pipeline(model)
-
-    # ── Agent 终态自动 agent_done ──
-    # 各 Agent 完成终态后自动触发 agent_done，回到 design_router 路由下一个
-    # 终态名来自各 workflow.py 定义 + hfsm_registry transitions
-    #   combat:    review      -> design_combat_review
-    #   numerical: output      -> design_numerical_output
-    #   system:    export      -> design_system_export
-    def _make_auto_done(existing_hook_name):
-        """包装已有终态 hook，执行完后自动调 agent_done"""
-        existing = getattr(model, existing_hook_name, None)
-        def auto_done_wrapper(*args, **kwargs):
-            if existing:
-                existing(*args, **kwargs)
-            # 延迟触发 agent_done（pytransitions queued=True 会排队执行）
-            model.agent_done()
-        return auto_done_wrapper
-
-    # combat 终态: design_combat_review
-    model.on_enter_design_combat_review = _make_auto_done('on_enter_design_combat_review')
-    # numerical 终态: design_numerical_output
-    model.on_enter_design_numerical_output = _make_auto_done('on_enter_design_numerical_output')
-    # system 终态: design_system_export
-    model.on_enter_design_system_export = _make_auto_done('on_enter_design_system_export')
 
     return model
 
