@@ -405,7 +405,7 @@ def _bind_callbacks(model, state_prefix, workflow_mod):
         # 绑定到 model：pytransitions 调 on_enter_executor_execute 时触发
         full_method = f"{event_type}_{state_prefix}_{state_name}"
 
-        # 包装函数，自动传 model 给 hook
+        # 包装函数，自动传 model 给 hook，并保存返回值
         import functools
         @functools.wraps(func)
         def make_wrapper(f):
@@ -413,9 +413,13 @@ def _bind_callbacks(model, state_prefix, workflow_mod):
                 import inspect
                 sig = inspect.signature(f)
                 if 'model' in sig.parameters:
-                    return f(model=model, *args, **kwargs)
+                    result = f(model=model, *args, **kwargs)
                 else:
-                    return f(*args, **kwargs)
+                    result = f(*args, **kwargs)
+                # 保存 hook 返回值供 CLI 读取
+                if result and isinstance(result, dict):
+                    model._last_hook_result = result
+                return result
             return wrapper
 
         setattr(model, full_method, make_wrapper(func))
