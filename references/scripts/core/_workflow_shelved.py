@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# [SHELVED] 旧 Workflow 框架，已被 hfsm_registry.py (pytransitions) 替代。
+# 保留代码供参考，不再使用。
 """
 通用 Workflow 框架 — 给 AI agent 的纪律工具。
 
