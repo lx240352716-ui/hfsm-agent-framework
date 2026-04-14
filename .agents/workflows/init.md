@@ -1,24 +1,24 @@
 ---
-description: "初始化项目 — 扫描 Excel、建索引、学词表，让项目可以工作"
+description: "初始化项目 — 扫描配表、建索引、学词表，让项目可以工作"
 ---
 
 # /init — 项目初始化
 
-将裸仓库变成可工作的项目环境。适用于首次 clone 或 excel 目录更新后。
+将裸仓库变成可工作的项目环境。适用于首次 clone 或配表目录更新后。
 
 ## 执行步骤
 
 ### Step 1: 检查环境
 
-确认项目根目录存在 `excel/` 目录且有 xlsx 文件：
+确认项目存在 `knowledge/gamedata/` 目录且有 xlsx 文件：
 
 // turbo
 
 ```shell
-python -c "import os; d=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath('references/scripts/core/constants.py'))), 'excel'); files=[f for f in os.listdir(d) if f.endswith('.xlsx')]; print(f'excel/ 下有 {len(files)} 个 xlsx 文件')" 2>&1 || echo "❌ excel/ 目录不存在或为空，请先放入 Excel 配表文件"
+python -c "import os; d=os.path.join('knowledge', 'gamedata'); files=[f for root,_,fs in os.walk(d) for f in fs if f.endswith('.xlsx') and not f.startswith('~$')]; print(f'knowledge/gamedata/ 下有 {len(files)} 个 xlsx 文件')" 2>&1 || echo "[WARN] knowledge/gamedata/ 目录不存在或为空，请先放入 xlsx 配表文件"
 ```
 
-如果 excel/ 不存在或为空，**停止并提示用户放入文件**。
+如果 `knowledge/gamedata/` 不存在或为空，**停止并提示用户放入文件**。
 
 ### Step 2: 运行初始化脚本
 
@@ -30,7 +30,7 @@ python references/scripts/cli/init_project.py
 
 脚本会自动完成：
 
-1. 扫描 `excel/` -> 生成 `table_registry.json`
+1. 扫描 `knowledge/gamedata/` -> 生成 `table_registry.json`
 2. 建 SQLite 索引 -> `table_index.db`
 3. 学习词表（中英字段映射）-> `table_vocabulary.json`
 4. 创建 Agent `data/` 目录

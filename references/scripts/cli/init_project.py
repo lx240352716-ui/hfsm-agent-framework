@@ -3,9 +3,9 @@
 项目初始化脚本 — /init workflow 调用此脚本。
 
 功能：
-  1. 扫描 gamedata/ → 生成 table_registry.json
-  2. 建 SQLite 索引 → table_index.db
-  3. 学习词表 → table_vocabulary.json
+  1. 扫描 knowledge/gamedata/ -> 生成 table_registry.json
+  2. 建 SQLite 索引 -> table_index.db
+  3. 学习词表 -> table_vocabulary.json
   4. 创建 Agent data/ 目录
   5. 基础验证
 """
@@ -33,9 +33,9 @@ def main():
     t0 = time.time()
 
     print("=" * 60)
-    print("  🚀 项目初始化")
+    print("  [+] 项目初始化")
     print("=" * 60)
-    print(f"  项目根目录: {BASE_DIR}")
+    print(f"  [i] 项目根目录: {BASE_DIR}")
 
     # ── Step 0: 自动安装依赖 ──
     step(0, total_steps, "检测并安装 Python 依赖")
@@ -59,7 +59,7 @@ def main():
                 missing.append(pip_name)
 
     if missing:
-        print(f"  📦 安装缺失的包: {', '.join(missing)}")
+        print(f"  [+] 安装缺失的包: {', '.join(missing)}")
         import subprocess
         for pkg in missing:
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', pkg],
@@ -68,7 +68,7 @@ def main():
     else:
         print("  [OK] 所有依赖已就绪")
 
-    print(f"  📂 Excel 目录: {EXCEL_DIR}")
+    print(f"  [i] 配表目录: {EXCEL_DIR}")
 
     # ── Step 1: 检查 Excel 目录 ──
     step(1, total_steps, "检查 Excel 目录")
