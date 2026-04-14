@@ -84,14 +84,23 @@ def load_gemini_key():
 
 
 def analyze_image_with_gemini(image_path, api_key):
-    """用 Gemini Vision API 分析单张 UI 图片，返回结构化描述。"""
-    from google import genai
+    """用 Gemini Vision REST API 分析单张 UI 图片，返回结构化描述。
+    
+    直接用 urllib 发 HTTP 请求，自动走 HTTPS_PROXY 环境变量代理。
+    """
+    import requests as req_lib
+    from io import BytesIO
+    from PIL import Image
 
-    client = genai.Client(api_key=api_key)
-
-    # 读取图片 base64
-    with open(image_path, 'rb') as f:
-        image_data = f.read()
+    # 压缩图片到 max 800px 再编码，大幅减小 payload
+    img = Image.open(image_path).convert('RGB')
+    max_dim = 800
+    if max(img.size) > max_dim:
+        ratio = max_dim / max(img.size)
+        img = img.resize((int(img.width * ratio), int(img.height * ratio)))
+    buf = BytesIO()
+    img.save(buf, format='JPEG', quality=75)
+    image_data = buf.getvalue()
 
     prompt = """Analyze this game UI screenshot as a professional UI/UX designer.
 Extract the following information in JSON format:
@@ -117,21 +126,29 @@ Extract the following information in JSON format:
 
 Respond ONLY with valid JSON, no markdown formatting."""
 
-    response = client.models.generate_content(
-        model='gemini-2.0-flash',
-        contents=[
-            {
-                'inline_data': {
-                    'mime_type': _get_mime_type(image_path),
-                    'data': base64.b64encode(image_data).decode('utf-8'),
-                }
-            },
-            prompt,
-        ],
-    )
+    url = (f'https://generativelanguage.googleapis.com/v1beta/'
+           f'models/gemini-3.1-pro-preview:generateContent?key={api_key}')
 
-    # 解析 JSON
-    text = response.text.strip()
+    resp = req_lib.post(url, json={
+        'contents': [{
+            'parts': [
+                {
+                    'inline_data': {
+                        'mime_type': 'image/jpeg',
+                        'data': base64.b64encode(image_data).decode('utf-8'),
+                    }
+                },
+                {'text': prompt},
+            ]
+        }]
+    }, timeout=120)
+    resp.raise_for_status()
+    result = resp.json()
+
+
+    # 提取文本
+    text = result['candidates'][0]['content']['parts'][0]['text'].strip()
+
     # 去掉可能的 markdown 包裹
     if text.startswith('```'):
         text = text.split('\n', 1)[1]

@@ -27,6 +27,24 @@
 
 ---
 
+## [SHELVED] Phase 4: Wireframe 自动生成（2026-04-13 ~ 04-14，已搁置）
+
+> 尝试了多种方案，均不满足项目需求，暂停。
+
+- 方案1: LLM Vision → SVG 线框图 — 组件风格不统一
+- 方案2: 组件规范 + SVG 拼装 — 还原度不够
+- 方案3: LLM Vision → HTML 线框 — 手写还原度有限
+- 方案4: screenshot-to-code（开源工具） — 已部署测试，效果不理想
+- 结论：当前 LLM 生图/转码还原度不足以满足游戏 UI 线框需求
+
+### 保留文件（仅参考）
+
+- `knowledge/wireframes/` — 测试生成的 SVG/HTML 线框
+- `references/tools/screenshot-to-code/` — 开源工具（可删）
+- `references/scripts/tools/generate_wireframes.py` — 批量生成脚本
+
+---
+
 ## 已完成（归档见 done.md）
 
 - System Designer L1 Agent 完整实现（2026-04-10）

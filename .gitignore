@@ -5,11 +5,22 @@ knowledge/gamedocs/.cache/
 knowledge/gamedata/**/*.xlsx
 knowledge/gamedata/**/*.xls
 knowledge/gamedata/**/*.txt
+knowledge/gamedata/**/*.bat
 knowledge/*.md
 !knowledge/README.md
 knowledge/wiki/*.md
 knowledge/wiki/*.json
 !knowledge/wiki/README.md
+
+# -- Shelved: 线框图/UI 资源（实验性功能，不入库） --
+knowledge/wireframes/
+knowledge/ui_assets/
+knowledge/ui_style.md
+references/scripts/tools/generate_wireframes.py
+references/scripts/tools/test_svg_wireframe.py
+
+# -- 第三方工具（本地安装，不入库） --
+references/tools/
 
 # -- 嵌套 git 仓库 --
 hfsm-test-clone/
@@ -38,3 +49,4 @@ Thumbs.db
 .DS_Store
 ~$*.xlsx
 .env
+

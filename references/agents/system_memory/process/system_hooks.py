@@ -323,10 +323,11 @@ def on_enter_wireframe():
 
     # ── 5. 逐个生成界面 ──
     screenshots = []
+    style_guide = ui_data.get('style_guide', '')
     for i, section in enumerate(ui_sections):
         name = section.get('name', f'screen_{i+1}')
         description = section.get('description', section.get('content', ''))
-        prompt = _build_stitch_prompt(name, description)
+        prompt = _build_stitch_prompt(name, description, style_guide)
 
         print(f'[+] Stitch: generating screen {i+1}/{len(ui_sections)}: {name}...')
         try:
@@ -568,14 +569,15 @@ def _load_stitch_api_key():
     return ''
 
 
-def _build_stitch_prompt(screen_name, description):
+def _build_stitch_prompt(screen_name, description, style_guide=''):
     """将界面描述转为 Stitch 结构化 prompt。
 
     Stitch 推荐格式: [Device] [Mode] [Screen Type] [Style] [Layout] [Components]
     """
+    style = style_guide or 'Japanese anime/manga, vibrant, One Piece pirate theme, dark background, parchment panels, gold accents'
     prompt = (
-        f"[Device] Mobile [Mode] Light [Screen Type] Game Activity Screen "
-        f"[Style] Japanese anime/manga, vibrant, One Piece theme "
+        f"[Device] Mobile [Mode] Dark [Screen Type] Game Activity Screen "
+        f"[Style] {style} "
         f"[Screen Name] {screen_name} "
         f"[Layout and Components] {description}"
     )
