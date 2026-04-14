@@ -18,6 +18,7 @@ Usage:
 import os
 import re
 import json
+import sys
 import hashlib
 from collections import defaultdict
 from datetime import date
@@ -114,17 +115,18 @@ def _extract_table_groups(knowledge_dir):
 
 
 def _build_cn_en_map(wiki_dir, groups, registry_hash, force=False):
-    """读取中英映射，检测新增 group 并提示 IDE AI 补充。
+    """读取中英映射，检测新增 group 并自动触发翻译脚本。
 
     映射文件 cn_en_map.json 由 IDE AI 生成/维护，不依赖外部 API。
-    当 registry hash 变化时，检测未翻译的新 group 并输出提示。
+    当 registry hash 变化或文件缺失时，自动调用 build_cn_en_map.py
+    输出结构化翻译指令，让 IDE AI 补全。
 
     Returns:
         dict: {chinese_keyword: folder_or_prefix}  e.g. {'神秘商店': 'MysteryShop'}
     """
     cache_path = os.path.join(wiki_dir, 'cn_en_map.json')
 
-    # hash 一致且不强制刷新 → 直接用缓存
+    # hash 一致且不强制刷新 -> 直接用缓存
     if os.path.exists(cache_path) and not force:
         try:
             with open(cache_path, 'r', encoding='utf-8') as f:
@@ -139,32 +141,38 @@ def _build_cn_en_map(wiki_dir, groups, registry_hash, force=False):
     if not groups:
         return {}
 
-    # hash 不一致或无缓存 → 检测需要翻译的 group
-    en_terms = sorted(groups.keys())
-
-    # 尝试读旧缓存，检测新增未翻译的 group
+    # hash 不一致或无缓存 -> 尝试读旧缓存
+    mapping = {}
     if os.path.exists(cache_path):
         try:
             with open(cache_path, 'r', encoding='utf-8') as f:
                 cached = json.load(f)
             mapping = cached.get('mapping', {})
             translated_en = set(mapping.values())
-            new_groups = [g for g in en_terms if g not in translated_en]
-            if new_groups:
-                print(f"  [WARN] {len(new_groups)} new groups need CN translation:")
-                for g in new_groups[:20]:
-                    print(f"         - {g} ({len(groups[g])} tables)")
-                print(f"         -> Please ask IDE AI to update wiki/cn_en_map.json")
-            else:
+            new_groups = [g for g in sorted(groups.keys()) if g not in translated_en]
+            if not new_groups:
                 print(f"  [i] Wiki: loaded {len(mapping)} CN-EN terms (hash stale but complete)")
-            return mapping
+                return mapping
         except Exception:
             pass
 
-    # 完全无缓存
-    print(f"  [WARN] wiki/cn_en_map.json not found, {len(en_terms)} groups need CN translation")
-    print(f"         -> Please ask IDE AI to generate wiki/cn_en_map.json")
-    return {}
+    # 缺失或不完整 -> 调用 build_cn_en_map.py 输出翻译指令
+    _trigger_cn_en_build()
+    return mapping
+
+
+def _trigger_cn_en_build():
+    """调用 build_cn_en_map.py 输出翻译指令供 IDE AI 执行。"""
+    import subprocess
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    build_script = os.path.normpath(
+        os.path.join(script_dir, '..', 'cli', 'build_cn_en_map.py')
+    )
+    if os.path.exists(build_script):
+        subprocess.run([sys.executable, build_script], cwd=os.path.dirname(script_dir))
+    else:
+        print(f"  [WARN] build_cn_en_map.py not found at {build_script}")
+
 
 
 # ==============================================================

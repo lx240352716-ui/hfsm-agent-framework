@@ -49,6 +49,20 @@ python references/scripts/cli/build_cache.py
 
 > 如果 `knowledge/gamedocs/` 为空，会提示并跳过此步骤。后续放入文档后单独执行即可。
 
+### Step 2.4: 构建 CN-EN 映射
+
+// turbo
+
+```shell
+python references/scripts/cli/build_cn_en_map.py
+```
+
+脚本从 `table_registry.json` 提取英文分组名。如果输出 `[ACTION]`，
+说明需要翻译。**请根据输出的英文分组名列表，将每个翻译为中文游戏术语**，
+按格式写入 `knowledge/wiki/cn_en_map.json`。
+
+如果输出 `[OK]` 则映射已完整，无需操作。
+
 ### Step 2.5: 编译 Wiki 知识索引
 
 // turbo
