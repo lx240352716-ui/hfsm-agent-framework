@@ -19,7 +19,8 @@ import json
 from datetime import datetime
 
 # ── 路径 ──
-BASE = os.path.join(r'G:\op_design', 'references')
+# 从当前文件位置推导：executor_hooks.py → process/ → executor_memory/ → agents/ → references/
+BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 sys.path.insert(0, os.path.join(BASE, 'scripts', 'core'))
 

@@ -17,10 +17,12 @@ import json
 import glob
 from datetime import datetime
 
-# ── 路径設置 ──
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'core'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'combat'))
-sys.path.insert(0, os.path.join(r'G:\op_design', 'references', 'scripts', 'tools'))
+# ── 路径设置 ──
+# 从当前文件位置推导：qa_hooks.py → process/ → qa_memory/ → agents/ → references/
+_REFERENCES_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.insert(0, os.path.join(_REFERENCES_DIR, 'scripts', 'core'))
+sys.path.insert(0, os.path.join(_REFERENCES_DIR, 'scripts', 'combat'))
+sys.path.insert(0, os.path.join(_REFERENCES_DIR, 'scripts', 'tools'))
 
 from constants import agent_paths
 from hook_utils import load_json as _load_json, save_json as _save_json
