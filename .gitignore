@@ -1,7 +1,6 @@
 # -- knowledge: 保留目录结构和 README，排除源数据和生成产物 --
 knowledge/gamedocs/*.docx
 knowledge/gamedocs/*.xlsx
-knowledge/gamedocs/.cache/
 knowledge/gamedata/**/*.xlsx
 knowledge/gamedata/**/*.xls
 knowledge/gamedata/**/*.txt
