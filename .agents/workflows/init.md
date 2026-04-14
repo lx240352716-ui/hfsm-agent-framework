@@ -25,7 +25,7 @@ python -c "import os; d=os.path.join(os.path.dirname(os.path.dirname(os.path.abs
 // turbo
 
 ```shell
-python references/scripts/tools/init_project.py
+python references/scripts/cli/init_project.py
 ```
 
 脚本会自动完成：
