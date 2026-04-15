@@ -482,6 +482,12 @@ def _bind_callbacks(model, state_prefix, workflow_mod):
                                 else:
                                     result['knowledge'] = [existing, public_knowledge]
                                 _hfsm_log('KNOWLEDGE', f'{method_name} injected public knowledge ({len(public_knowledge)} chars)')
+
+                                # 自动追加 instruction：提醒 LLM 查阅公有知识
+                                wiki_hint = '\n[公有知识已注入] 请查阅注入的 wiki/gamedocs 公有知识，从中寻找类似设计文档和配表数据作为参考依据。'
+                                existing_inst = result.get('instruction', '')
+                                if isinstance(existing_inst, str):
+                                    result['instruction'] = existing_inst + wiki_hint
                         except Exception as e:
                             _hfsm_log('WARN', f'{method_name} failed to load public knowledge: {e}')
 
