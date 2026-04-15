@@ -99,6 +99,62 @@ def get_current_agent_info(model):
         return {"layer": state, "agent": None, "step": None}
 
 
+def _invoke_current_hook(model):
+    """根据当前状态，查找并调用对应的 on_enter hook。
+
+    pytransitions 的 set_state() 不触发回调，所以需要手动调用。
+    hook 返回的 dict 包含 instruction/knowledge 供 LLM 使用。
+
+    查找顺序：
+        1. on_enter_<current_state>（精确匹配）
+        2. on_enter_<current_state>_<initial>（父状态 → 初始子状态）
+
+    Returns:
+        dict or None: hook 的返回值，或 None（无 hook）
+    """
+    state = model.state
+    if not state:
+        return None
+
+    # 尝试 1：精确匹配当前状态
+    hook_method = f"on_enter_{state}"
+    fn = getattr(model, hook_method, None)
+
+    # 尝试 2：当前状态是父状态，查初始子状态
+    if not (fn and callable(fn)):
+        # 从 workflows 获取对应 agent 的 initial state
+        workflows = getattr(model, 'workflows', {})
+        for wf_name, wf_mod in workflows.items():
+            prefix = f"design_{wf_name}" if wf_name not in ('coordinator', 'executor', 'qa') else wf_name
+            if state == prefix:
+                initial = getattr(wf_mod, 'initial', None)
+                if initial:
+                    hook_method = f"on_enter_{prefix}_{initial}"
+                    fn = getattr(model, hook_method, None)
+                    if fn and callable(fn):
+                        # 同时更新 task_state.json 为精确子状态
+                        precise_state = f"{prefix}_{initial}"
+                        model.machine.set_state(precise_state, model)
+                        _save_state(model.state)
+                        break
+
+    if fn and callable(fn):
+        try:
+            result = fn()
+            return result if isinstance(result, dict) else None
+        except Exception as e:
+            print(f"  [ERR] hook {hook_method} failed: {e}")
+            return {"error": str(e)}
+    return None
+
+
+def _save_state(state_str):
+    """保存状态到 task_state.json"""
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    with open(STATE_FILE, 'w', encoding='utf-8') as f:
+        json.dump({"state": state_str}, f, ensure_ascii=False, indent=2)
+
+
 def bootstrap(start_at=None):
     """启动或恢复 HFSM
 
@@ -139,6 +195,9 @@ def bootstrap(start_at=None):
     agent_info = get_current_agent_info(model)
     knowledge = get_knowledge_files(model.state)
 
+    # 自动调用当前步骤的 on_enter hook
+    hook_result = _invoke_current_hook(model)
+
     # 输出状态报告
     print("=" * 50)
     print(f"HFSM {mode}")
@@ -148,15 +207,27 @@ def bootstrap(start_at=None):
     print(f"  当前 Agent: {agent_info.get('agent', '-')}")
     print(f"  当前步骤: {agent_info.get('step', '-')}")
     print(f"  知识库: {[os.path.basename(f) for f in knowledge]}")
+    if hook_result:
+        if hook_result.get('instruction'):
+            print(f"\n  [instruction]")
+            for line in hook_result['instruction'].split('\n'):
+                print(f"  {line}")
+        if hook_result.get('trigger'):
+            print(f"\n  [trigger] {hook_result['trigger']}")
+    else:
+        print(f"\n  [WARN] 未找到当前步骤的 hook，LLM 需自行判断任务")
     print("=" * 50)
 
-    return {
+    result = {
         "mode": mode,
         "state": agent_info,
         "raw_state": model.state,
         "knowledge_files": [os.path.basename(f) for f in knowledge],
         "knowledge_paths": knowledge,
     }
+    if hook_result:
+        result["hook_result"] = hook_result
+    return result
 
 
 if __name__ == "__main__":
