@@ -44,6 +44,7 @@ def main():
         'pandas': 'pandas>=2.0',
         'openpyxl': 'openpyxl>=3.1',
         'dotenv': 'python-dotenv>=1.0',
+        'transitions': 'transitions>=0.9',
         'markitdown': 'markitdown',
     }
     # Windows 专用

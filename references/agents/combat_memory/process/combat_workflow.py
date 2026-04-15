@@ -3,7 +3,7 @@
 战斗策划 Workflow 定义
 
 声明式配置：状态、转移、知识库、hooks。
-由 machine.py 读取并自动组装到 HFSM 中。
+由 hfsm_registry.py 读取并自动组装到 HFSM 中。
 结构对齐 numerical_workflow.py。
 """
 
