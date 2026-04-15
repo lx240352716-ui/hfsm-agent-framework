@@ -15,8 +15,28 @@ HFSM 分层注册 — 基于 pytransitions 库。
 import importlib.util
 import os
 import sys
+from datetime import datetime
 
 from transitions.extensions import HierarchicalMachine
+
+
+# ── 调试日志 ────────────────────────────────────────
+
+_LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output')
+_LOG_FILE = os.path.join(_LOG_DIR, 'hfsm_debug.log')
+
+
+def _hfsm_log(tag, msg):
+    """写入调试日志文件 + 打印到控制台"""
+    ts = datetime.now().strftime('%H:%M:%S.%f')[:-3]
+    line = f"[{ts}] [{tag}] {msg}"
+    print(f"  {line}")
+    try:
+        os.makedirs(_LOG_DIR, exist_ok=True)
+        with open(_LOG_FILE, 'a', encoding='utf-8') as f:
+            f.write(line + '\n')
+    except Exception:
+        pass
 
 
 # ── 路径常量 ────────────────────────────────────────
@@ -320,7 +340,13 @@ def build_hfsm():
         initial='coordinator',
         ignore_invalid_triggers=False,
         queued=True,
+        after_state_change='_on_state_changed',
     )
+
+    # 全局状态变化日志
+    def _on_state_changed():
+        _hfsm_log('STATE', f'-> {model.state}')
+    model._on_state_changed = _on_state_changed
 
     # 把 machine 和 workflow 配置挂到 model 上
     model.machine = machine
@@ -405,18 +431,25 @@ def _bind_callbacks(model, state_prefix, workflow_mod):
         # 绑定到 model：pytransitions 调 on_enter_executor_execute 时触发
         full_method = f"{event_type}_{state_prefix}_{state_name}"
 
-        # 包装函数，自动传 model 给 hook
+        # 包装函数，自动传 model 给 hook + 日志
         import functools
         @functools.wraps(func)
-        def make_wrapper(f):
+        def make_wrapper(f, method_name):
             def wrapper(*args, **kwargs):
+                _hfsm_log('HOOK', f'{method_name} -> calling {f.__module__}.{f.__name__}()')
                 import inspect
                 sig = inspect.signature(f)
                 if 'model' in sig.parameters:
-                    return f(model=model, *args, **kwargs)
+                    result = f(model=model, *args, **kwargs)
                 else:
-                    return f(*args, **kwargs)
+                    result = f(*args, **kwargs)
+                if isinstance(result, dict):
+                    keys = list(result.keys())
+                    _hfsm_log('HOOK', f'{method_name} returned keys={keys}')
+                    if result.get('trigger'):
+                        _hfsm_log('HOOK', f'{method_name} trigger={result["trigger"]}')
+                return result
             return wrapper
 
-        setattr(model, full_method, make_wrapper(func))
+        setattr(model, full_method, make_wrapper(func, full_method))
 
