@@ -54,7 +54,8 @@ def open_workbook(table_name, read_only=False):
         (wb, ws) 元组
     """
     excel = get_com_excel()
-    src_path = os.path.abspath(_get_table_path(table_name))
+    src_path, _ = _get_table_path(table_name)
+    src_path = os.path.abspath(src_path)
     wb = excel.Workbooks.Open(src_path, ReadOnly=read_only)
     ws = wb.ActiveSheet
     return wb, ws
@@ -112,6 +113,14 @@ def query_db(sql, params=None, db_path=None):
         results = query_db("SELECT * FROM [_Buff] WHERE [perfactor] = ?", ('speed',))
         max_id = query_db("SELECT MAX(CAST([Unnamed:_0] AS INT)) as m FROM [_Buff]")[0]['m']
     """
+    # 自动解析 FROM [表名]，模糊匹配后替换为完整表名
+    m = re.search(r'FROM\s+\[([^\]]+)\]', sql, re.IGNORECASE)
+    if m:
+        raw_name = m.group(1)
+        resolved = _ensure_indexed(raw_name)
+        if resolved != raw_name:
+            sql = sql.replace(f'[{raw_name}]', f'[{_clean_identifier(resolved)}]')
+
     conn = _get_conn(db_path)
     if params:
         rows = conn.execute(sql, params).fetchall()
@@ -150,6 +159,13 @@ def refresh_index(xlsx_path, table_name, header_row=1):
 
 
 def _get_table_path(table_name):
+    """解析表名，返回 (xlsx_path, resolved_name)。
+
+    支持 basename 模糊匹配：BeastPiratesBoss -> BeastPirates/BeastPiratesBoss
+
+    Returns:
+        (str, str): (xlsx 文件绝对路径, 解析后的完整表名) 或 (None, table_name)
+    """
     global _table_registry
     if _table_registry is None:
         import json as _json
@@ -159,18 +175,19 @@ def _get_table_path(table_name):
         )
         with open(reg_path, 'r', encoding='utf-8') as f:
             _table_registry = _json.load(f)
+    resolved_name = table_name
     entry = _table_registry.get(table_name)
     # basename 模糊匹配：BeastPiratesBoss -> BeastPirates/BeastPiratesBoss
     if not entry:
         suffix = '/' + table_name
         candidates = [k for k in _table_registry if k.endswith(suffix)]
         if len(candidates) == 1:
-            table_name = candidates[0]
-            entry = _table_registry[table_name]
+            resolved_name = candidates[0]
+            entry = _table_registry[resolved_name]
     if not entry:
-        return None
+        return None, table_name
     rel_path = entry if isinstance(entry, str) else entry.get('path', '')
-    return os.path.join(EXCEL_DIR, rel_path)
+    return os.path.join(EXCEL_DIR, rel_path), resolved_name
 
 # ── 行结构自动检测（类似 CC detectLanguage 模式） ──
 
@@ -364,9 +381,9 @@ def detect_row_schema(table_name):
     if table_name in _schema_cache:
         return _schema_cache[table_name]
 
-    _ensure_indexed(table_name)
+    resolved_name = _ensure_indexed(table_name)
     conn = _get_conn()
-    clean = _clean_identifier(table_name)
+    clean = _clean_identifier(resolved_name)
 
     # 取前 8 行数据
     rows = conn.execute(
@@ -433,10 +450,10 @@ def get_columns(table_name):
     if table_name in _columns_cache:
         return _columns_cache[table_name]
 
-    _ensure_indexed(table_name)
+    resolved_name = _ensure_indexed(table_name)
     conn = _get_conn()
-    clean = _clean_identifier(table_name)
-    schema = detect_row_schema(table_name)
+    clean = _clean_identifier(resolved_name)
+    schema = detect_row_schema(resolved_name)
 
     # 中文列名来源
     all_cn = [c[1] for c in conn.execute(
@@ -508,28 +525,34 @@ def get_columns(table_name):
 
 
 def _ensure_indexed(table_name):
-    """确保表已被索引到 SQLite，过期则自动重建。"""
+    """确保表已被索引到 SQLite，过期则自动重建。
+
+    Returns:
+        str: 解析后的完整表名（模糊匹配时可能与输入不同）
+    """
     conn = _get_conn()
-    full_path = _get_table_path(table_name)
+    full_path, resolved_name = _get_table_path(table_name)
     if not full_path:
         raise ValueError(f"表 '{table_name}' 不在 table_registry.json 中")
 
     need_reindex = False
     try:
         cols = [c[1] for c in conn.execute(
-            f'PRAGMA table_info([{_clean_identifier(table_name)}])').fetchall()]
+            f'PRAGMA table_info([{_clean_identifier(resolved_name)}])').fetchall()]
         if not cols:
             need_reindex = True
         else:
             if os.path.exists(full_path) and os.path.exists(DB_PATH):
                 if os.path.getmtime(full_path) > os.path.getmtime(DB_PATH):
-                    print(f"  [WARN] 检测到 '{table_name}' 源表已被外部修改，自动重建索引...")
+                    print(f"  [WARN] 检测到 '{resolved_name}' 源表已被外部修改，自动重建索引...")
                     need_reindex = True
     except Exception:
         need_reindex = True
 
     if need_reindex:
-        refresh_index(full_path, table_name)
+        refresh_index(full_path, resolved_name)
+
+    return resolved_name
 
 
 def max_id(table_name, id_field, min_val=None, max_val=None):
@@ -543,9 +566,9 @@ def max_id(table_name, id_field, min_val=None, max_val=None):
     Returns:
         int or None: 最大 ID
     """
-    _ensure_indexed(table_name)
+    resolved_name = _ensure_indexed(table_name)
     conn = _get_conn()
-    tbl = _clean_identifier(table_name)
+    tbl = _clean_identifier(resolved_name)
     fld = _clean_identifier(id_field)
     try:
         if min_val is not None and max_val is not None:
