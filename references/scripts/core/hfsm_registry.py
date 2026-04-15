@@ -431,10 +431,13 @@ def _bind_callbacks(model, state_prefix, workflow_mod):
         # 绑定到 model：pytransitions 调 on_enter_executor_execute 时触发
         full_method = f"{event_type}_{state_prefix}_{state_name}"
 
-        # 包装函数，自动传 model 给 hook + 日志
+        # 包装函数，自动传 model 给 hook + 日志 + 注入公有知识
         import functools
+        # 获取 agent 名称（用于 load_state_knowledge）
+        agent_name = state_prefix.replace('design_', '')
+
         @functools.wraps(func)
-        def make_wrapper(f, method_name):
+        def make_wrapper(f, method_name, evt_type, st_name, ag_name, wf_mod):
             def wrapper(*args, **kwargs):
                 _hfsm_log('HOOK', f'{method_name} -> calling {f.__module__}.{f.__name__}()')
                 import inspect
@@ -448,8 +451,25 @@ def _bind_callbacks(model, state_prefix, workflow_mod):
                     _hfsm_log('HOOK', f'{method_name} returned keys={keys}')
                     if result.get('trigger'):
                         _hfsm_log('HOOK', f'{method_name} trigger={result["trigger"]}')
+
+                    # on_enter 时自动注入公有知识（__manifest__ 等）
+                    if evt_type == 'on_enter':
+                        try:
+                            public_knowledge = load_state_knowledge(ag_name, st_name, wf_mod)
+                            if public_knowledge:
+                                existing = result.get('knowledge', [])
+                                if isinstance(existing, list):
+                                    result['knowledge'] = existing + [public_knowledge]
+                                else:
+                                    result['knowledge'] = [existing, public_knowledge]
+                                _hfsm_log('KNOWLEDGE', f'{method_name} injected public knowledge ({len(public_knowledge)} chars)')
+                        except Exception as e:
+                            _hfsm_log('WARN', f'{method_name} failed to load public knowledge: {e}')
+
                 return result
             return wrapper
 
-        setattr(model, full_method, make_wrapper(func, full_method))
+        setattr(model, full_method, make_wrapper(
+            func, full_method, event_type, state_name, agent_name, workflow_mod
+        ))
 
