@@ -8,8 +8,6 @@
     - 快速模式（--start-at）：跳过 L0，直接从 L1 开始
     - --check：仅做 preflight 校验，不启动状态机
     - --skill：指定 Skill（doc, excel, design）
-
-重命名自 hfsm_bootstrap.py
 """
 
 import os
@@ -44,10 +42,6 @@ def preflight_check():
     ]
     for f in core_files:
         if not os.path.exists(os.path.join(CORE_DIR, f)):
-            # 兼容旧文件名
-            old_name = f.replace('workflow_engine.py', 'hfsm_registry.py')
-            if old_name != f and os.path.exists(os.path.join(CORE_DIR, old_name)):
-                continue
             errors.append(f"[MISSING] core/{f}")
 
     # 2. Workflow + Hooks 文件
@@ -88,13 +82,7 @@ def preflight_check():
 
 # ── 导入引擎 ────────────────────────────────────────
 
-try:
-    from workflow_engine import build_workflow
-except ImportError:
-    # 兼容旧文件名
-    from hfsm_registry import build_hfsm as _old_build
-    def build_workflow(skill_name="design"):
-        return _old_build()
+from workflow_engine import build_workflow
 
 # Agent -> 知识库目录映射
 KNOWLEDGE_MAP = {

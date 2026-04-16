@@ -9,8 +9,6 @@
     from workflow_engine import build_workflow
     model = build_workflow("doc")   # 出设计文档
     model = build_workflow("excel") # 填配表
-
-重命名自 hfsm_registry.py
 """
 
 import functools
@@ -683,10 +681,3 @@ def _build_excel_pipeline(config):
 
     _engine_log('BUILD', f'{config["name"]} pipeline ready.')
     return model
-
-
-# ── 兼容旧接口 ──────────────────────────────────────
-
-def build_hfsm():
-    """[DEPRECATED] 使用 build_workflow('design') 代替"""
-    return build_workflow("design")
