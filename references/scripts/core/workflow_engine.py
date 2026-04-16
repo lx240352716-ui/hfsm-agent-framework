@@ -25,7 +25,7 @@ from transitions.extensions import HierarchicalMachine
 # ── 调试日志 ────────────────────────────────────────
 
 _LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output')
-_LOG_FILE = os.path.join(_LOG_DIR, 'hfsm_debug.log')
+_LOG_FILE = os.path.join(_LOG_DIR, 'workflow_debug.log')
 
 
 def _engine_log(tag, msg):
@@ -298,7 +298,7 @@ def _bind_callbacks(model, state_prefix, workflow_mod):
 
 # ── 构建工作流 ──────────────────────────────────────
 
-def build_workflow(skill_name="design"):
+def build_workflow(skill_name="excel"):
     """
     根据 Skill 配置构建状态机。
 

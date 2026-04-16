@@ -193,8 +193,17 @@ def _invoke_current_hook(model):
 
     if not (fn and callable(fn)):
         workflows = getattr(model, 'workflows', {})
+        skill = getattr(model, 'skill_name', 'design')
         for wf_name, wf_mod in workflows.items():
-            prefix = f"design_{wf_name}" if wf_name not in ('coordinator', 'executor', 'qa') else wf_name
+            # 根据 skill 动态确定状态前缀
+            if wf_name in ('coordinator', 'executor', 'qa'):
+                prefix = wf_name
+            elif skill == 'doc':
+                prefix = f"docwork_{wf_name.replace('_doc', '')}"
+            elif skill == 'excel' and 'excel' in wf_name:
+                prefix = f"excelwork_{wf_name.replace('_excel', '')}"
+            else:
+                prefix = f"design_{wf_name}"
             if state == prefix:
                 initial = getattr(wf_mod, 'initial', None)
                 if initial:
@@ -226,7 +235,7 @@ def _save_state(state_str, skill_name=None):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def bootstrap(skill="design", start_at=None):
+def bootstrap(skill="excel", start_at=None):
     """启动或恢复工作流
 
     Args:
